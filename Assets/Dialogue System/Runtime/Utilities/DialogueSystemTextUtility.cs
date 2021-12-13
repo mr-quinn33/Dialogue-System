@@ -48,7 +48,7 @@ namespace DialogueSystem.Runtime.Utilities
         {
             var textLength = text.Length;
             var textCharacters = text.ToCharArray();
-            var currentWhitespacelessTextLength = 0;
+            var currentWhitespacesTextLength = 0;
             for (var currentCharacterIndex = 0; currentCharacterIndex < textLength; ++currentCharacterIndex)
             {
                 var currentTextCharacter = textCharacters[currentCharacterIndex];
@@ -57,10 +57,10 @@ namespace DialogueSystem.Runtime.Utilities
                     continue;
                 }
 
-                textCharacters[currentWhitespacelessTextLength++] = currentTextCharacter;
+                textCharacters[currentWhitespacesTextLength++] = currentTextCharacter;
             }
 
-            return new string(textCharacters, 0, currentWhitespacelessTextLength);
+            return new string(textCharacters, 0, currentWhitespacesTextLength);
         }
 
         // See here for alternatives: https://stackoverflow.com/questions/3210393/how-do-i-remove-all-non-alphanumeric-characters-from-a-string-except-dash
@@ -68,7 +68,7 @@ namespace DialogueSystem.Runtime.Utilities
         {
             var textLength = text.Length;
             var textCharacters = text.ToCharArray();
-            var currentWhitespacelessTextLength = 0;
+            var currentWhitespacesTextLength = 0;
             for (var currentCharacterIndex = 0; currentCharacterIndex < textLength; ++currentCharacterIndex)
             {
                 var currentTextCharacter = textCharacters[currentCharacterIndex];
@@ -77,10 +77,10 @@ namespace DialogueSystem.Runtime.Utilities
                     continue;
                 }
 
-                textCharacters[currentWhitespacelessTextLength++] = currentTextCharacter;
+                textCharacters[currentWhitespacesTextLength++] = currentTextCharacter;
             }
 
-            return new string(textCharacters, 0, currentWhitespacelessTextLength);
+            return new string(textCharacters, 0, currentWhitespacesTextLength);
         }
     }
 }

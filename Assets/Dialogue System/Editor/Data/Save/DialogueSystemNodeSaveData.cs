@@ -18,7 +18,7 @@ namespace DialogueSystem.Editor.Data.Save
 
         [field: SerializeField] public string GroupID { get; set; }
 
-        [field: SerializeField] public DialogueType DialogueType { get; set; }
+        [field: SerializeField] public DialogueType Type { get; set; }
 
         [field: SerializeField] public Vector2 Position { get; set; }
     }

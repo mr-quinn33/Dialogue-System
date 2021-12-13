@@ -5,23 +5,23 @@ namespace DialogueSystem.Runtime.ScriptableObjects
 {
     public class DialogueSystemDialogueContainer : ScriptableObject
     {
-        [field: SerializeField] public string FileName { get; set; }
+        [field: SerializeField] public string FileName { get; private set; }
 
-        [field: SerializeField] public SerializableDictionary<DialogueSystemDialogueGroup, List<DialogueSystemDialogue>> DialogueGroups { get; set; }
+        [field: SerializeField] public SerializableDictionary<DialogueSystemDialogueGroup, List<DialogueSystemDialogue>> Groups { get; private set; }
 
-        [field: SerializeField] public List<DialogueSystemDialogue> UngroupedDialogues { get; set; }
+        [field: SerializeField] public List<DialogueSystemDialogue> UngroupedDialogues { get; private set; }
 
         public void Initialize(string fileName)
         {
             FileName = fileName;
-            DialogueGroups = new SerializableDictionary<DialogueSystemDialogueGroup, List<DialogueSystemDialogue>>();
+            Groups = new SerializableDictionary<DialogueSystemDialogueGroup, List<DialogueSystemDialogue>>();
             UngroupedDialogues = new List<DialogueSystemDialogue>();
         }
 
         public List<string> GetDialogueGroupNames()
         {
             var dialogueGroupNames = new List<string>();
-            foreach (var dialogueGroup in DialogueGroups.Keys)
+            foreach (var dialogueGroup in Groups.Keys)
             {
                 dialogueGroupNames.Add(dialogueGroup.GroupName);
             }
@@ -31,7 +31,7 @@ namespace DialogueSystem.Runtime.ScriptableObjects
 
         public List<string> GetGroupedDialogueNames(DialogueSystemDialogueGroup dialogueGroup, bool startingDialoguesOnly)
         {
-            var groupedDialogues = DialogueGroups[dialogueGroup];
+            var groupedDialogues = Groups[dialogueGroup];
             var groupedDialogueNames = new List<string>();
             foreach (var groupedDialogue in groupedDialogues)
             {
@@ -40,7 +40,7 @@ namespace DialogueSystem.Runtime.ScriptableObjects
                     continue;
                 }
 
-                groupedDialogueNames.Add(groupedDialogue.DialogueName);
+                groupedDialogueNames.Add(groupedDialogue.Name);
             }
 
             return groupedDialogueNames;
@@ -56,7 +56,7 @@ namespace DialogueSystem.Runtime.ScriptableObjects
                     continue;
                 }
 
-                ungroupedDialogueNames.Add(ungroupedDialogue.DialogueName);
+                ungroupedDialogueNames.Add(ungroupedDialogue.Name);
             }
 
             return ungroupedDialogueNames;

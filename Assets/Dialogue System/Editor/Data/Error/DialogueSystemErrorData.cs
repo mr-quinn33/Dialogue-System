@@ -4,7 +4,7 @@ namespace DialogueSystem.Editor.Data.Error
 {
     public class DialogueSystemErrorData
     {
-        public Color Color { get; set; }
+        public Color Color { get; private set; }
 
         public DialogueSystemErrorData()
         {

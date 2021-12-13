@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using DialogueSystem.Editor.Data.Save;
 using DialogueSystem.Editor.Utilities;
 using DialogueSystem.Editor.Windows;
@@ -7,13 +8,14 @@ using UnityEngine;
 
 namespace DialogueSystem.Editor.Elements
 {
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
     public class DialogueSystemMultipleChoiceNode : DialogueSystemNode
     {
         public override void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView, Vector2 position)
         {
             base.Initialize(nodeName, dialogueSystemGraphView, position);
-            DialogueType = DialogueType.MultipleChoice;
-            var choiceData = new DialogueSystemChoiceSaveData()
+            Type = DialogueType.MultipleChoice;
+            var choiceData = new DialogueSystemChoiceSaveData
             {
                 Text = "New Choice"
             };
@@ -25,7 +27,7 @@ namespace DialogueSystem.Editor.Elements
             base.Draw();
             var addChoiceButton = DialogueSystemElementUtility.CreateButton("Add Choice", () =>
             {
-                var choiceData = new DialogueSystemChoiceSaveData()
+                var choiceData = new DialogueSystemChoiceSaveData
                 {
                     Text = "New Choice"
                 };
@@ -44,11 +46,11 @@ namespace DialogueSystem.Editor.Elements
             RefreshExpandedState();
         }
 
-        private Port CreateChoicePort(object userData)
+        private Port CreateChoicePort(object data)
         {
             var choicePort = this.CreatePort();
-            choicePort.userData = userData;
-            var choiceData = (DialogueSystemChoiceSaveData)userData;
+            choicePort.userData = data;
+            var choiceData = (DialogueSystemChoiceSaveData)data;
             var deleteChoiceButton = DialogueSystemElementUtility.CreateButton("Delete", () =>
             {
                 if (Choices.Count == 1)
@@ -66,7 +68,7 @@ namespace DialogueSystem.Editor.Elements
             });
             deleteChoiceButton.AddToClassList("ds-node__button");
             var choiceTextField = DialogueSystemElementUtility.CreateTextField(choiceData.Text, null, callback => choiceData.Text = callback.newValue);
-            var classNames = new string[]
+            var classNames = new[]
             {
                 "ds-node__text-field",
                 "ds-node__text-field__hidden",

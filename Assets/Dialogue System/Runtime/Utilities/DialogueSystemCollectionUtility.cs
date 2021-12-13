@@ -4,7 +4,7 @@ namespace DialogueSystem.Runtime.Utilities
 {
     public static class DialogueSystemCollectionUtility
     {
-        public static void AddItem<T, K>(this SerializableDictionary<T, List<K>> serializableDictionary, T key, K value)
+        public static void AddItem<K, V>(this SerializableDictionary<K, List<V>> serializableDictionary, K key, V value)
         {
             if (serializableDictionary.ContainsKey(key))
             {
@@ -12,7 +12,7 @@ namespace DialogueSystem.Runtime.Utilities
                 return;
             }
 
-            serializableDictionary.Add(key, new List<K>() { value });
+            serializableDictionary.Add(key, new List<V> { value });
         }
     }
 }

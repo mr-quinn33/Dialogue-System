@@ -9,7 +9,7 @@ namespace DialogueSystem.Editor.Windows
 {
     public class DialogueSystemEditorWindow : EditorWindow
     {
-        private const string defaultFileName = "DialogueFileName";
+        private const string DefaultFileName = "DialogueFileName";
         private static TextField fileNameTextField;
         private DialogueSystemGraphView graphView;
         private Button saveButton;
@@ -37,11 +37,11 @@ namespace DialogueSystem.Editor.Windows
         private void AddToolbar()
         {
             var toolbar = new Toolbar();
-            fileNameTextField = DialogueSystemElementUtility.CreateTextField(defaultFileName, "File Name:", callback => fileNameTextField.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters());
-            saveButton = DialogueSystemElementUtility.CreateButton("Save", () => Save());
-            var loadButton = DialogueSystemElementUtility.CreateButton("Load", () => Load());
-            var clearButton = DialogueSystemElementUtility.CreateButton("Clear", () => Clear());
-            var resetButton = DialogueSystemElementUtility.CreateButton("Reset", () => ResetGraph());
+            fileNameTextField = DialogueSystemElementUtility.CreateTextField(DefaultFileName, "File Name:", callback => fileNameTextField.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters());
+            saveButton = DialogueSystemElementUtility.CreateButton("Save", Save);
+            var loadButton = DialogueSystemElementUtility.CreateButton("Load", Load);
+            var clearButton = DialogueSystemElementUtility.CreateButton("Clear", Clear);
+            var resetButton = DialogueSystemElementUtility.CreateButton("Reset", ResetGraph);
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
             toolbar.Add(loadButton);
@@ -89,7 +89,7 @@ namespace DialogueSystem.Editor.Windows
         private void ResetGraph()
         {
             Clear();
-            UpdateFileName(defaultFileName);
+            UpdateFileName(DefaultFileName);
         }
 
         public static void UpdateFileName(string newFileName)

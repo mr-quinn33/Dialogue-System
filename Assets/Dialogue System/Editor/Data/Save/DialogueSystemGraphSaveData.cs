@@ -5,11 +5,11 @@ namespace DialogueSystem.Editor.Data.Save
 {
     public class DialogueSystemGraphSaveData : ScriptableObject
     {
-        [field: SerializeField] public string FileName { get; set; }
+        [field: SerializeField] public string FileName { get; private set; }
 
-        [field: SerializeField] public List<DialogueSystemGroupSaveData> Groups { get; set; }
+        [field: SerializeField] public List<DialogueSystemGroupSaveData> Groups { get; private set; }
 
-        [field: SerializeField] public List<DialogueSystemNodeSaveData> Nodes { get; set; }
+        [field: SerializeField] public List<DialogueSystemNodeSaveData> Nodes { get; private set; }
 
         [field: SerializeField] public List<string> OldGroupNames { get; set; }
 

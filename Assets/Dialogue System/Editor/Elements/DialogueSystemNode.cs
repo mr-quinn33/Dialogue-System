@@ -12,20 +12,20 @@ using UnityEngine.UIElements;
 
 namespace DialogueSystem.Editor.Elements
 {
-    public class DialogueSystemNode : Node
+    public abstract class DialogueSystemNode : Node
     {
         private protected DialogueSystemGraphView graphView;
         private Color defaultBackgroundColor;
 
         public string ID { get; set; }
 
-        public string DialogueName { get; set; }
+        public string Name { get; private set; }
 
         public List<DialogueSystemChoiceSaveData> Choices { get; set; }
 
         public string Text { get; set; }
 
-        public DialogueType DialogueType { get; set; }
+        public DialogueType Type { get; protected set; }
 
         public DialogueSystemGroup Group { get; set; }
 
@@ -39,7 +39,7 @@ namespace DialogueSystem.Editor.Elements
         public virtual void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView, Vector2 position)
         {
             ID = Guid.NewGuid().ToString();
-            DialogueName = nodeName;
+            Name = nodeName;
             Choices = new List<DialogueSystemChoiceSaveData>();
             Text = "Dialogue text.";
             SetPosition(new Rect(position, Vector2.zero));
@@ -51,20 +51,20 @@ namespace DialogueSystem.Editor.Elements
 
         public virtual void Draw()
         {
-            var dialogueNameTextField = DialogueSystemElementUtility.CreateTextField(DialogueName, null, callback =>
+            var dialogueNameTextField = DialogueSystemElementUtility.CreateTextField(Name, null, callback =>
             {
                 var target = (TextField)callback.target;
                 target.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters();
                 if (string.IsNullOrEmpty(target.value))
                 {
-                    if (!string.IsNullOrEmpty(DialogueName))
+                    if (!string.IsNullOrEmpty(Name))
                     {
                         ++graphView.NameErrorsCount;
                     }
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(DialogueName))
+                    if (string.IsNullOrEmpty(Name))
                     {
                         --graphView.NameErrorsCount;
                     }
@@ -73,17 +73,17 @@ namespace DialogueSystem.Editor.Elements
                 if (Group == null)
                 {
                     graphView.RemoveUngroupedNode(this);
-                    DialogueName = target.value;
+                    Name = target.value;
                     graphView.AddUngroupedNode(this);
                     return;
                 }
 
                 var currentGroup = Group;
                 graphView.RemoveGroupedNode(this, Group);
-                DialogueName = target.value;
+                Name = target.value;
                 graphView.AddGroupedNode(this, currentGroup);
             });
-            var classNames = new string[]
+            var classNames = new[]
             {
                 "ds-node__text-field",
                 "ds-node__text-field__hidden",
@@ -97,7 +97,7 @@ namespace DialogueSystem.Editor.Elements
             customDataContainer.AddToClassList("ds-node__custom-data-container");
             var textFoldout = DialogueSystemElementUtility.CreateFoldout("Dialogue Text");
             var textTextField = DialogueSystemElementUtility.CreateTextArea(Text, null, callback => Text = callback.newValue);
-            classNames = new string[]
+            classNames = new[]
             {
                 "ds-node__text-field",
                 "ds-node__quote-text-field"
@@ -116,8 +116,9 @@ namespace DialogueSystem.Editor.Elements
 
         private void DisconnectPorts(VisualElement container)
         {
-            foreach (Port port in container.Children())
+            foreach (var visualElement in container.Children())
             {
+                var port = (Port) visualElement;
                 if (!port.connected)
                 {
                     continue;

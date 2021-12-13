@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DialogueSystem.Editor.Elements
 {
-    public class DialogueSystemGroup : Group
+    public sealed class DialogueSystemGroup : Group
     {
         private readonly Color defaultBorderColor;
         private readonly float defaultBorderWidth;

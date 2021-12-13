@@ -7,22 +7,22 @@ namespace DialogueSystem.Runtime.ScriptableObjects
 {
     public class DialogueSystemDialogue : ScriptableObject
     {
-        [field: SerializeField] public string DialogueName { get; set; }
+        [field: SerializeField] public string Name { get; private set; }
 
         [field: SerializeField] [field: TextArea] public string Text { get; set; }
 
-        [field: SerializeField] public List<DialogueSystemDialogueChoiceData> Choices { get; set; }
+        [field: SerializeField] public List<DialogueSystemDialogueChoiceData> Choices { get; private set; }
 
-        [field: SerializeField] public DialogueType DialogueType { get; set; }
+        [field: SerializeField] public DialogueType Type { get; set; }
 
-        [field: SerializeField] public bool IsStartingDialogue { get; set; }
+        [field: SerializeField] public bool IsStartingDialogue { get; private set; }
 
         public void Initialize(string dialogueName, string text, List<DialogueSystemDialogueChoiceData> choices, DialogueType dialogueType, bool isStartingDialogue)
         {
-            DialogueName = dialogueName;
+            Name = dialogueName;
             Text = text;
             Choices = choices;
-            DialogueType = dialogueType;
+            Type = dialogueType;
             IsStartingDialogue = isStartingDialogue;
         }
     }

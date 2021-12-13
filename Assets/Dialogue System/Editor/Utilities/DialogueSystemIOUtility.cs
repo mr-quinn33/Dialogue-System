@@ -83,7 +83,7 @@ namespace DialogueSystem.Editor.Utilities
             var dialogueGroup = CreateAsset<DialogueSystemDialogueGroup>($"{containerFolderPath}/Groups/{groupName}", groupName);
             dialogueGroup.Initialize(groupName);
             createdDialogueGroups.Add(group.ID, dialogueGroup);
-            dialogueContainer.DialogueGroups.Add(dialogueGroup, new List<DialogueSystemDialogue>());
+            dialogueContainer.Groups.Add(dialogueGroup, new List<DialogueSystemDialogue>());
             SaveAsset(dialogueGroup);
         }
 
@@ -111,12 +111,12 @@ namespace DialogueSystem.Editor.Utilities
                 SaveNodeToScriptableObject(node, dialogueContainer);
                 if (node.Group != null)
                 {
-                    groupedNodeNames.AddItem(node.Group.title, node.DialogueName);
+                    groupedNodeNames.AddItem(node.Group.title, node.Name);
 
                     continue;
                 }
 
-                ungroupedNodeNames.Add(node.DialogueName);
+                ungroupedNodeNames.Add(node.Name);
             }
 
             UpdateDialoguesChoicesConnections();
@@ -130,11 +130,11 @@ namespace DialogueSystem.Editor.Utilities
             var nodeData = new DialogueSystemNodeSaveData()
             {
                 ID = node.ID,
-                Name = node.DialogueName,
+                Name = node.Name,
                 Choices = choices,
                 Text = node.Text,
                 GroupID = node.Group?.ID,
-                DialogueType = node.DialogueType,
+                Type = node.Type,
                 Position = node.GetPosition().position
             };
             graphData.Nodes.Add(nodeData);
@@ -145,16 +145,16 @@ namespace DialogueSystem.Editor.Utilities
             DialogueSystemDialogue dialogue;
             if (node.Group != null)
             {
-                dialogue = CreateAsset<DialogueSystemDialogue>($"{containerFolderPath}/Groups/{node.Group.title}/Dialogues", node.DialogueName);
-                dialogueContainer.DialogueGroups.AddItem(createdDialogueGroups[node.Group.ID], dialogue);
+                dialogue = CreateAsset<DialogueSystemDialogue>($"{containerFolderPath}/Groups/{node.Group.title}/Dialogues", node.Name);
+                dialogueContainer.Groups.AddItem(createdDialogueGroups[node.Group.ID], dialogue);
             }
             else
             {
-                dialogue = CreateAsset<DialogueSystemDialogue>($"{containerFolderPath}/Global/Dialogues", node.DialogueName);
+                dialogue = CreateAsset<DialogueSystemDialogue>($"{containerFolderPath}/Global/Dialogues", node.Name);
                 dialogueContainer.UngroupedDialogues.Add(dialogue);
             }
 
-            dialogue.Initialize(node.DialogueName, node.Text, ConvertNodeChoicesToDialogueChoices(node.Choices), node.DialogueType, node.IsStartingNode());
+            dialogue.Initialize(node.Name, node.Text, ConvertNodeChoicesToDialogueChoices(node.Choices), node.Type, node.IsStartingNode());
             createdDialogues.Add(node.ID, dialogue);
             SaveAsset(dialogue);
         }
@@ -250,9 +250,9 @@ namespace DialogueSystem.Editor.Utilities
             LoadNodesConnections();
         }
 
-        private static void LoadGroups(List<DialogueSystemGroupSaveData> groups)
+        private static void LoadGroups(List<DialogueSystemGroupSaveData> groupSaveDataList)
         {
-            foreach (var groupData in groups)
+            foreach (var groupData in groupSaveDataList)
             {
                 var group = graphView.CreateGroup(groupData.Name, groupData.Position);
                 group.ID = groupData.ID;
@@ -260,12 +260,12 @@ namespace DialogueSystem.Editor.Utilities
             }
         }
 
-        private static void LoadNodes(List<DialogueSystemNodeSaveData> nodes)
+        private static void LoadNodes(List<DialogueSystemNodeSaveData> nodeSaveDataList)
         {
-            foreach (var nodeData in nodes)
+            foreach (var nodeData in nodeSaveDataList)
             {
                 var choices = CloneNodeChoices(nodeData.Choices);
-                var node = graphView.CreateNode(nodeData.Name, nodeData.DialogueType, nodeData.Position, false);
+                var node = graphView.CreateNode(nodeData.Name, nodeData.Type, nodeData.Position, false);
                 node.ID = nodeData.ID;
                 node.Choices = choices;
                 node.Text = nodeData.Text;
@@ -287,8 +287,9 @@ namespace DialogueSystem.Editor.Utilities
         {
             foreach (var loadedNode in loadedNodes)
             {
-                foreach (Port choicePort in loadedNode.Value.outputContainer.Children())
+                foreach (var visualElement in loadedNode.Value.outputContainer.Children())
                 {
+                    var choicePort = (Port) visualElement;
                     var choiceData = (DialogueSystemChoiceSaveData)choicePort.userData;
                     if (string.IsNullOrEmpty(choiceData.NodeID))
                     {
@@ -331,12 +332,11 @@ namespace DialogueSystem.Editor.Utilities
                 {
                     var group = (DialogueSystemGroup)graphElement;
                     groups.Add(group);
-                    return;
                 }
             });
         }
 
-        public static void CreateFolder(string parentFolderPath, string newFolderName)
+        private static void CreateFolder(string parentFolderPath, string newFolderName)
         {
             if (AssetDatabase.IsValidFolder($"{parentFolderPath}/{newFolderName}"))
             {
@@ -346,13 +346,13 @@ namespace DialogueSystem.Editor.Utilities
             _ = AssetDatabase.CreateFolder(parentFolderPath, newFolderName);
         }
 
-        public static void RemoveFolder(string path)
+        private static void RemoveFolder(string path)
         {
             _ = FileUtil.DeleteFileOrDirectory($"{path}.meta");
             _ = FileUtil.DeleteFileOrDirectory($"{path}/");
         }
 
-        public static T CreateAsset<T>(string path, string assetName) where T : UnityEngine.ScriptableObject
+        private static T CreateAsset<T>(string path, string assetName) where T : UnityEngine.ScriptableObject
         {
             var fullPath = $"{path}/{assetName}.asset";
             var asset = LoadAsset<T>(path, assetName);
@@ -371,32 +371,21 @@ namespace DialogueSystem.Editor.Utilities
             return AssetDatabase.LoadAssetAtPath<T>(fullPath);
         }
 
-        public static void SaveAsset(UnityEngine.Object asset)
+        private static void SaveAsset(UnityEngine.Object asset)
         {
             EditorUtility.SetDirty(asset);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
 
-        public static void RemoveAsset(string path, string assetName)
+        private static void RemoveAsset(string path, string assetName)
         {
             _ = AssetDatabase.DeleteAsset($"{path}/{assetName}.asset");
         }
 
         private static List<DialogueSystemChoiceSaveData> CloneNodeChoices(List<DialogueSystemChoiceSaveData> nodeChoices)
         {
-            var choices = new List<DialogueSystemChoiceSaveData>();
-            foreach (var choice in nodeChoices)
-            {
-                var choiceData = new DialogueSystemChoiceSaveData()
-                {
-                    Text = choice.Text,
-                    NodeID = choice.NodeID
-                };
-                choices.Add(choiceData);
-            }
-
-            return choices;
+            return nodeChoices.Select(choice => new DialogueSystemChoiceSaveData {Text = choice.Text, NodeID = choice.NodeID}).ToList();
         }
     }
 }

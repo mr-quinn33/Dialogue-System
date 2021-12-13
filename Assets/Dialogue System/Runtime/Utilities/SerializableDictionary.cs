@@ -32,17 +32,17 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
         }
     }
 
-    private Dictionary<TKey, uint> KeyPositions => _keyPositions.Value;
-    private Lazy<Dictionary<TKey, uint>> _keyPositions;
+    private Dictionary<TKey, uint> KeyPositions => keyPositions.Value;
+    private Lazy<Dictionary<TKey, uint>> keyPositions;
 
     public SerializableDictionary()
     {
-        _keyPositions = new Lazy<Dictionary<TKey, uint>>(MakeKeyPositions);
+        keyPositions = new Lazy<Dictionary<TKey, uint>>(MakeKeyPositions);
     }
 
     public SerializableDictionary(IDictionary<TKey, TValue> dictionary)
     {
-        _keyPositions = new Lazy<Dictionary<TKey, uint>>(MakeKeyPositions);
+        keyPositions = new Lazy<Dictionary<TKey, uint>>(MakeKeyPositions);
         if (dictionary == null)
         {
             throw new ArgumentException("The passed dictionary is null.");
@@ -73,7 +73,7 @@ public class SerializableDictionary<TKey, TValue> : SerializableDictionary, IDic
     public void OnAfterDeserialize()
     {
         // After deserialization, the key positions might be changed
-        _keyPositions = new Lazy<Dictionary<TKey, uint>>(MakeKeyPositions);
+        keyPositions = new Lazy<Dictionary<TKey, uint>>(MakeKeyPositions);
     }
 
     #region IDictionary

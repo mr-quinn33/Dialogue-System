@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DialogueSystem.Editor.Windows
 {
-    public class DialogueSystemSearchWindow : UnityEngine.ScriptableObject, ISearchWindowProvider
+    public class DialogueSystemSearchWindow : ScriptableObject, ISearchWindowProvider
     {
         private DialogueSystemGraphView graphView;
         private Texture2D indentationIcon;
@@ -45,10 +45,10 @@ namespace DialogueSystem.Editor.Windows
             return searchTreeEntries;
         }
 
-        public bool OnSelectEntry(SearchTreeEntry SearchTreeEntry, SearchWindowContext context)
+        public bool OnSelectEntry(SearchTreeEntry searchTreeEntry, SearchWindowContext context)
         {
             var localMousePosition = graphView.GetLocalMousePosition(context.screenMousePosition, true);
-            switch (SearchTreeEntry.userData)
+            switch (searchTreeEntry.userData)
             {
                 case DialogueType.SingleChoice:
                     {

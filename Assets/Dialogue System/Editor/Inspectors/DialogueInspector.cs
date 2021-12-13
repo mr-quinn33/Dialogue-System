@@ -114,7 +114,7 @@ namespace DialogueSystem.Editor.Inspectors
             var oldSelectedDialogueIndex = selectedDialogueIndexProperty.intValue;
             var oldDialogue = (DialogueSystemDialogue)dialogueProperty.objectReferenceValue;
             var isOldDialogueNull = oldDialogue == null;
-            var oldDialogueName = isOldDialogueNull ? string.Empty : oldDialogue.DialogueName;
+            var oldDialogueName = isOldDialogueNull ? string.Empty : oldDialogue.Name;
             UpdateIndexOnNamesListUpdate(dialogueNames, selectedDialogueIndexProperty, oldSelectedDialogueIndex, oldDialogueName, isOldDialogueNull);
             selectedDialogueIndexProperty.intValue = DialogueSystemEditorUtility.DrawPopup("Dialogue", selectedDialogueIndexProperty, dialogueNames.ToArray());
             var selectedDialogueName = dialogueNames[selectedDialogueIndexProperty.intValue];

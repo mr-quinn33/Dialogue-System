@@ -6,6 +6,7 @@ using DialogueSystem.Runtime.Enumerations;
 using DialogueSystem.Runtime.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -109,15 +110,14 @@ namespace DialogueSystem.Editor.Windows
             var group = new DialogueSystemGroup(title, position);
             AddGroup(group);
             AddElement(group);
-            foreach (GraphElement selectedElement in selection)
+            foreach (var selectedElement in selection.Cast<GraphElement>())
             {
-                if (!(selectedElement is DialogueSystemNode))
+                if (!(selectedElement is DialogueSystemNode node))
                 {
                     continue;
                 }
 
-                var node = (DialogueSystemNode)selectedElement;
-                group.AddElement(node);
+                @group.AddElement(node);
             }
 
             return group;
@@ -126,7 +126,7 @@ namespace DialogueSystem.Editor.Windows
         public DialogueSystemNode CreateNode(string nodeName, DialogueType dialogueType, Vector2 position, bool shouldDraw = true)
         {
             var nodeType = Type.GetType($"DialogueSystem.Editor.Elements.DialogueSystem{dialogueType}Node");
-            var node = (DialogueSystemNode)Activator.CreateInstance(nodeType);
+            var node = (DialogueSystemNode)Activator.CreateInstance(nodeType ?? throw new InvalidOperationException());
             node.Initialize(nodeName, this, position);
             if (shouldDraw)
             {
@@ -146,7 +146,7 @@ namespace DialogueSystem.Editor.Windows
                 var groupsToDelete = new List<DialogueSystemGroup>();
                 var nodesToDelete = new List<DialogueSystemNode>();
                 var edgesToDelete = new List<Edge>();
-                foreach (GraphElement selectedElement in selection)
+                foreach (var selectedElement in selection.Cast<GraphElement>())
                 {
                     if (selectedElement is DialogueSystemNode node)
                     {
@@ -167,22 +167,12 @@ namespace DialogueSystem.Editor.Windows
                     }
 
                     var group = (DialogueSystemGroup)selectedElement;
-                    groupsToDelete.Add(group);
+                    groupsToDelete.Add(@group);
                 }
 
                 foreach (var groupToDelete in groupsToDelete)
                 {
-                    var groupNodes = new List<DialogueSystemNode>();
-                    foreach (var groupElement in groupToDelete.containedElements)
-                    {
-                        if (!(groupElement is DialogueSystemNode))
-                        {
-                            continue;
-                        }
-
-                        var groupNode = (DialogueSystemNode)groupElement;
-                        groupNodes.Add(groupNode);
-                    }
+                    var groupNodes = groupToDelete.containedElements.OfType<DialogueSystemNode>().ToList();
 
                     groupToDelete.RemoveElements(groupNodes);
                     RemoveGroup(groupToDelete);
@@ -210,13 +200,12 @@ namespace DialogueSystem.Editor.Windows
             {
                 foreach (var element in elements)
                 {
-                    if (!(element is DialogueSystemNode))
+                    if (!(element is DialogueSystemNode node))
                     {
                         continue;
                     }
 
                     var dialogueSystemGroup = (DialogueSystemGroup)group;
-                    var node = (DialogueSystemNode)element;
                     RemoveUngroupedNode(node);
                     AddGroupedNode(node, dialogueSystemGroup);
                 }
@@ -229,13 +218,12 @@ namespace DialogueSystem.Editor.Windows
             {
                 foreach (var element in elements)
                 {
-                    if (!(element is DialogueSystemNode))
+                    if (!(element is DialogueSystemNode node))
                     {
                         continue;
                     }
 
                     var dialogueSystemGroup = (DialogueSystemGroup)group;
-                    var node = (DialogueSystemNode)element;
                     RemoveGroupedNode(node, dialogueSystemGroup);
                     AddUngroupedNode(node);
                 }
@@ -305,7 +293,7 @@ namespace DialogueSystem.Editor.Windows
 
         public void AddUngroupedNode(DialogueSystemNode node)
         {
-            var nodeName = node.DialogueName.ToLower();
+            var nodeName = node.Name.ToLower();
             if (!ungroupedNodes.ContainsKey(nodeName))
             {
                 var nodeErrorData = new DialogueSystemNodeErrorData();
@@ -327,7 +315,7 @@ namespace DialogueSystem.Editor.Windows
 
         public void RemoveUngroupedNode(DialogueSystemNode node)
         {
-            var nodeName = node.DialogueName.ToLower();
+            var nodeName = node.Name.ToLower();
             var ungroupedNodesList = ungroupedNodes[nodeName].Nodes;
             _ = ungroupedNodesList.Remove(node);
             node.ResetStyle();
@@ -387,7 +375,7 @@ namespace DialogueSystem.Editor.Windows
 
         public void AddGroupedNode(DialogueSystemNode node, DialogueSystemGroup group)
         {
-            var nodeName = node.DialogueName.ToLower();
+            var nodeName = node.Name.ToLower();
             node.Group = group;
             if (!groupedNodes.ContainsKey(group))
             {
@@ -415,7 +403,7 @@ namespace DialogueSystem.Editor.Windows
 
         public void RemoveGroupedNode(DialogueSystemNode node, DialogueSystemGroup group)
         {
-            var nodeName = node.DialogueName.ToLower();
+            var nodeName = node.Name.ToLower();
             node.Group = null;
             var groupedNodesList = groupedNodes[group][nodeName].Nodes;
             _ = groupedNodesList.Remove(node);
@@ -457,7 +445,7 @@ namespace DialogueSystem.Editor.Windows
 
         private void AddStyles()
         {
-            var classNames = new string[]
+            var classNames = new[]
             {
                 "Dialogue System/DialogueSystemGraphViewStyles.uss",
                 "Dialogue System/DialogueSystemNodeStyles.uss"
@@ -479,7 +467,7 @@ namespace DialogueSystem.Editor.Windows
 
         public void ClearGraph()
         {
-            graphElements.ForEach(graphElement => RemoveElement(graphElement));
+            graphElements.ForEach(RemoveElement);
             groups.Clear();
             groupedNodes.Clear();
             ungroupedNodes.Clear();

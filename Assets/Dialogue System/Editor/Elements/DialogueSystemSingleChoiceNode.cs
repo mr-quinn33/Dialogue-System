@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using DialogueSystem.Editor.Data.Save;
 using DialogueSystem.Editor.Utilities;
 using DialogueSystem.Editor.Windows;
@@ -6,12 +7,13 @@ using UnityEngine;
 
 namespace DialogueSystem.Editor.Elements
 {
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
     public class DialogueSystemSingleChoiceNode : DialogueSystemNode
     {
         public override void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView, Vector2 position)
         {
             base.Initialize(nodeName, dialogueSystemGraphView, position);
-            DialogueType = DialogueType.SingleChoice;
+            Type = DialogueType.SingleChoice;
             var choiceData = new DialogueSystemChoiceSaveData()
             {
                 Text = "Next Dialogue"
