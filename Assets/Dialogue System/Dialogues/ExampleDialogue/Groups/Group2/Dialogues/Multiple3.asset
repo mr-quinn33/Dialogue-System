@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f9dfa1ff4cdea4e8f88e9463b6296a, type: 3}
   m_Name: Multiple3
   m_EditorClassIdentifier: 
+  <IsStartingDialogue>k__BackingField: 0
+  <Type>k__BackingField: 1
   <Name>k__BackingField: Multiple3
   <Text>k__BackingField: Multiple3333333333
   <Choices>k__BackingField:
@@ -25,5 +27,3 @@ MonoBehaviour:
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: e4a511a7da0058d438e66d4b67a1a690, type: 2}
   - <Text>k__BackingField: 13
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: 7fffa18e56f8fba4da992b34742a2db0, type: 2}
-  <Type>k__BackingField: 1
-  <IsStartingDialogue>k__BackingField: 0

@@ -154,7 +154,7 @@ namespace DialogueSystem.Editor.Utilities
                 dialogueContainer.UngroupedDialogues.Add(dialogue);
             }
 
-            dialogue.Initialize(node.Name, node.Text, ConvertNodeChoicesToDialogueChoices(node.Choices), node.Type, node.IsStartingNode());
+            dialogue.Initialize(node.IsStartingNode(), node.Type, node.Name, node.Text, ConvertNodeChoicesToDialogueChoices(node.Choices));
             createdDialogues.Add(node.ID, dialogue);
             SaveAsset(dialogue);
         }

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f9dfa1ff4cdea4e8f88e9463b6296a, type: 3}
   m_Name: Single5
   m_EditorClassIdentifier: 
+  <IsStartingDialogue>k__BackingField: 0
+  <Type>k__BackingField: 0
   <Name>k__BackingField: Single5
   <Text>k__BackingField: Single555555
   <Choices>k__BackingField:
   - <Text>k__BackingField: Next Dialogue
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: 5fb53bcdfac389d40a7aff5ee3336911, type: 2}
-  <Type>k__BackingField: 0
-  <IsStartingDialogue>k__BackingField: 0
