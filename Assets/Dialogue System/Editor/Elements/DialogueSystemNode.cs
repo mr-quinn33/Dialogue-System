@@ -42,11 +42,11 @@ namespace DialogueSystem.Editor.Elements
             Name = nodeName;
             Choices = new List<DialogueSystemChoiceSaveData>();
             Text = "Dialogue text.";
-            SetPosition(new Rect(position, Vector2.zero));
             graphView = dialogueSystemGraphView;
             defaultBackgroundColor = new Color(29f / 255f, 29f / 255f, 30f / 255f);
             mainContainer.AddToClassList("ds-node__main-container");
             extensionContainer.AddToClassList("ds-node__extension-container");
+            SetPosition(new Rect(position, Vector2.zero));
         }
 
         public virtual void Draw()
@@ -59,14 +59,14 @@ namespace DialogueSystem.Editor.Elements
                 {
                     if (!string.IsNullOrEmpty(Name))
                     {
-                        ++graphView.NameErrorsCount;
+                        ++graphView.ErrorsCount;
                     }
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(Name))
                     {
-                        --graphView.NameErrorsCount;
+                        --graphView.ErrorsCount;
                     }
                 }
 
@@ -89,7 +89,7 @@ namespace DialogueSystem.Editor.Elements
                 "ds-node__text-field__hidden",
                 "ds-node__filename-text-field"
             };
-            _ = dialogueNameTextField.AddClasses(classNames);
+            dialogueNameTextField = dialogueNameTextField.AddClasses(classNames) as TextField;
             titleContainer.Insert(0, dialogueNameTextField);
             var inputPort = this.CreatePort("Dialogue Connection", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
             inputContainer.Add(inputPort);
@@ -102,7 +102,7 @@ namespace DialogueSystem.Editor.Elements
                 "ds-node__text-field",
                 "ds-node__quote-text-field"
             };
-            _ = textTextField.AddClasses(classNames);
+            textTextField = textTextField.AddClasses(classNames) as TextField;
             textFoldout.Add(textTextField);
             customDataContainer.Add(textFoldout);
             extensionContainer.Add(customDataContainer);

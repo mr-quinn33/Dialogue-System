@@ -5,11 +5,11 @@ namespace DialogueSystem.Runtime.ScriptableObjects
 {
     public class DialogueSystemDialogueContainer : ScriptableObject
     {
-        [field: SerializeField] public string FileName { get; private set; }
+        [field: SerializeField, ReadOnly] public string FileName { get; private set; }
 
-        [field: SerializeField] public SerializableDictionary<DialogueSystemDialogueGroup, List<DialogueSystemDialogue>> Groups { get; private set; }
+        [field: SerializeField, ReadOnly] public SerializableDictionary<DialogueSystemDialogueGroup, List<DialogueSystemDialogue>> Groups { get; private set; }
 
-        [field: SerializeField] public List<DialogueSystemDialogue> UngroupedDialogues { get; private set; }
+        [field: SerializeField, ReadOnly] public List<DialogueSystemDialogue> UngroupedDialogues { get; private set; }
 
         public void Initialize(string fileName)
         {

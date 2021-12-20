@@ -1,5 +1,6 @@
 using DialogueSystem.Editor.Elements;
 using DialogueSystem.Runtime.Enumerations;
+using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -48,33 +49,32 @@ namespace DialogueSystem.Editor.Windows
         public bool OnSelectEntry(SearchTreeEntry searchTreeEntry, SearchWindowContext context)
         {
             var localMousePosition = graphView.GetLocalMousePosition(context.screenMousePosition, true);
-            switch (searchTreeEntry.userData)
+            return (searchTreeEntry.userData) switch
             {
-                case DialogueType.SingleChoice:
-                    {
-                        var singleChoiceNode = (DialogueSystemSingleChoiceNode)graphView.CreateNode("DialogueName", DialogueType.SingleChoice, localMousePosition);
-                        graphView.AddElement(singleChoiceNode);
-                        return true;
-                    }
+                DialogueType.SingleChoice => Invoke(() =>
+                {
+                    var singleChoiceNode = (DialogueSystemSingleChoiceNode)graphView.CreateNode("DialogueName", DialogueType.SingleChoice, localMousePosition);
+                    graphView.AddElement(singleChoiceNode);
+                    return true;
+                }),
+                DialogueType.MultipleChoice => Invoke(() =>
+                {
+                    var multipleChoiceNode = (DialogueSystemMultipleChoiceNode)graphView.CreateNode("DialogueName", DialogueType.MultipleChoice, localMousePosition);
+                    graphView.AddElement(multipleChoiceNode);
+                    return true;
+                }),
+                Group _ => Invoke(() =>
+                {
+                    _ = graphView.CreateGroup("DialogueGroup", localMousePosition);
+                    return true;
+                }),
+                _ => false
+            };
+        }
 
-                case DialogueType.MultipleChoice:
-                    {
-                        var multipleChoiceNode = (DialogueSystemMultipleChoiceNode)graphView.CreateNode("DialogueName", DialogueType.MultipleChoice, localMousePosition);
-                        graphView.AddElement(multipleChoiceNode);
-                        return true;
-                    }
-
-                case Group _:
-                    {
-                        _ = graphView.CreateGroup("DialogueGroup", localMousePosition);
-                        return true;
-                    }
-
-                default:
-                    {
-                        return false;
-                    }
-            }
+        private static T Invoke<T>(Func<T> func)
+        {
+            return func.Invoke();
         }
     }
 }

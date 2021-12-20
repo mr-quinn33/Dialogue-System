@@ -18,9 +18,9 @@ namespace DialogueSystem.Editor.Elements
             ID = Guid.NewGuid().ToString();
             title = groupTitle;
             OldTitle = groupTitle;
-            SetPosition(new Rect(position, Vector2.zero));
             defaultBorderColor = contentContainer.style.borderBottomColor.value;
             defaultBorderWidth = contentContainer.style.borderBottomWidth.value;
+            SetPosition(new Rect(position, Vector2.zero));
         }
 
         public void SetErrorStyle(Color color)

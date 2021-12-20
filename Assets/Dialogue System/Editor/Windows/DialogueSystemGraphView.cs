@@ -15,25 +15,24 @@ namespace DialogueSystem.Editor.Windows
 {
     public class DialogueSystemGraphView : GraphView
     {
-        private int nameErrorsCount;
+        private int errorsCount;
         private DialogueSystemSearchWindow searchWindow;
         private readonly DialogueSystemEditorWindow editorWindow;
         private readonly SerializableDictionary<string, DialogueSystemNodeErrorData> ungroupedNodes;
         private readonly SerializableDictionary<string, DialogueSystemGroupErrorData> groups;
         private readonly SerializableDictionary<Group, SerializableDictionary<string, DialogueSystemNodeErrorData>> groupedNodes;
 
-        public int NameErrorsCount
+        public int ErrorsCount
         {
-            get => nameErrorsCount;
+            get => errorsCount;
             set
             {
-                nameErrorsCount = value;
-                if (nameErrorsCount == 0)
+                errorsCount = value;
+                if (errorsCount == 0)
                 {
                     editorWindow.EnableSaving();
                 }
-
-                if (nameErrorsCount == 1)
+                else
                 {
                     editorWindow.DisableSaving();
                 }
@@ -240,14 +239,14 @@ namespace DialogueSystem.Editor.Windows
                 {
                     if (!string.IsNullOrEmpty(dialogueSystemGroup.OldTitle))
                     {
-                        ++NameErrorsCount;
+                        ++ErrorsCount;
                     }
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(dialogueSystemGroup.OldTitle))
                     {
-                        --NameErrorsCount;
+                        --ErrorsCount;
                     }
                 }
 
@@ -308,7 +307,7 @@ namespace DialogueSystem.Editor.Windows
             node.SetErrorStyle(errorColor);
             if (ungroupedNodesList.Count == 2)
             {
-                ++NameErrorsCount;
+                ++ErrorsCount;
                 ungroupedNodesList[0].SetErrorStyle(errorColor);
             }
         }
@@ -321,7 +320,7 @@ namespace DialogueSystem.Editor.Windows
             node.ResetStyle();
             if (ungroupedNodesList.Count == 1)
             {
-                --NameErrorsCount;
+                --ErrorsCount;
                 ungroupedNodesList[0].ResetStyle();
                 return;
             }
@@ -349,7 +348,7 @@ namespace DialogueSystem.Editor.Windows
             group.SetErrorStyle(errorColor);
             if (groupsList.Count == 2)
             {
-                ++NameErrorsCount;
+                ++ErrorsCount;
                 groupsList[0].SetErrorStyle(errorColor);
             }
         }
@@ -362,7 +361,7 @@ namespace DialogueSystem.Editor.Windows
             group.ResetStyle();
             if (groupsList.Count == 1)
             {
-                --NameErrorsCount;
+                --ErrorsCount;
                 groupsList[0].ResetStyle();
                 return;
             }
@@ -396,7 +395,7 @@ namespace DialogueSystem.Editor.Windows
             node.SetErrorStyle(errorColor);
             if (groupedNodesList.Count == 2)
             {
-                ++NameErrorsCount;
+                ++ErrorsCount;
                 groupedNodesList[0].SetErrorStyle(errorColor);
             }
         }
@@ -410,7 +409,7 @@ namespace DialogueSystem.Editor.Windows
             node.ResetStyle();
             if (groupedNodesList.Count == 1)
             {
-                --NameErrorsCount;
+                --ErrorsCount;
                 groupedNodesList[0].ResetStyle();
                 return;
             }
@@ -471,7 +470,7 @@ namespace DialogueSystem.Editor.Windows
             groups.Clear();
             groupedNodes.Clear();
             ungroupedNodes.Clear();
-            NameErrorsCount = 0;
+            ErrorsCount = 0;
         }
     }
 }

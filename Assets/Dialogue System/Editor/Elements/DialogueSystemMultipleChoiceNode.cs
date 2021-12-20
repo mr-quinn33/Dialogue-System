@@ -1,14 +1,13 @@
-using System.Diagnostics.CodeAnalysis;
 using DialogueSystem.Editor.Data.Save;
 using DialogueSystem.Editor.Utilities;
 using DialogueSystem.Editor.Windows;
 using DialogueSystem.Runtime.Enumerations;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace DialogueSystem.Editor.Elements
 {
-    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
     public class DialogueSystemMultipleChoiceNode : DialogueSystemNode
     {
         public override void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView, Vector2 position)
@@ -74,7 +73,7 @@ namespace DialogueSystem.Editor.Elements
                 "ds-node__text-field__hidden",
                 "ds-node__choice-text-field"
             };
-            _ = choiceTextField.AddClasses(classNames);
+            choiceTextField = choiceTextField.AddClasses(classNames) as TextField;
             choicePort.Add(choiceTextField);
             choicePort.Add(deleteChoiceButton);
             return choicePort;

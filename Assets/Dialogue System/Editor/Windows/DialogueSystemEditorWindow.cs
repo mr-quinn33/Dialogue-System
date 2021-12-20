@@ -47,7 +47,7 @@ namespace DialogueSystem.Editor.Windows
             toolbar.Add(loadButton);
             toolbar.Add(clearButton);
             toolbar.Add(resetButton);
-            _ = toolbar.AddStyleSheets("Dialogue System/DialogueSystemToolbarStyles.uss");
+            toolbar = toolbar.AddStyleSheets("Dialogue System/DialogueSystemToolbarStyles.uss") as Toolbar;
             rootVisualElement.Add(toolbar);
         }
 

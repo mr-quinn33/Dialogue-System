@@ -9,11 +9,11 @@ namespace DialogueSystem.Runtime.ScriptableObjects
     {
         [field: SerializeField, ReadOnly] public bool IsStartingDialogue { get; private set; }
 
-        [field: SerializeField, ReadOnly] public DialogueType Type { get; set; }
+        [field: SerializeField, ReadOnly] public DialogueType Type { get; private set; }
         
         [field: SerializeField, ReadOnly] public string Name { get; private set; }
 
-        [field: SerializeField, ReadOnly] [field: TextArea] public string Text { get; set; }
+        [field: SerializeField, ReadOnly] [field: TextArea] public string Text { get; private set; }
 
         [field: SerializeField, ReadOnly] public List<DialogueSystemDialogueChoiceData> Choices { get; private set; }
         
