@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class DialoguePanel : MonoBehaviour
 {
-    [SerializeField] private float playRate = 0.05f;
+    [SerializeField] private float timeSpan = 0.1f;
     [SerializeField] private GameObject dialogueObject;
     [SerializeField] private GameObject buttonPrefab;
     
@@ -55,7 +55,7 @@ public class DialoguePanel : MonoBehaviour
         var firstChild = transform.GetChild(0);
         if (firstChild && firstChild.TryGetComponent(out Text dialogueText) && gameObject.activeInHierarchy)
         {
-            textCoroutine = StartCoroutine(SetText(dialogueText, dialogue.Text, playRate, dialogue.GroupName + ": "));
+            textCoroutine = StartCoroutine(SetText(dialogueText, dialogue.Text, timeSpan, dialogue.GroupName + ": "));
         }
         
         for (var i = 0; i < dialogue.ChoiceCount; i++)
@@ -70,7 +70,7 @@ public class DialoguePanel : MonoBehaviour
                     {
                         StopCoroutine(textCoroutine);
                         textCoroutine = null;
-                        transform.GetChild(0).GetComponent<Text>().text = $"{dialogue.GroupName}: {dialogue.Text}";
+                        firstChild.GetComponent<Text>().text = $"{dialogue.GroupName}: {dialogue.Text}";
                         return;
                     }
                     
@@ -79,6 +79,7 @@ public class DialoguePanel : MonoBehaviour
                     {
                         dialogue.Reset();
                         Destroy(gameObject);
+                        return;
                     }
                     
                     GenerateChoiceButtons(buttons, dialogue, buttonPref);
@@ -95,9 +96,9 @@ public class DialoguePanel : MonoBehaviour
         }
     }
 
-    private IEnumerator SetText(Text text, string content, float rate, string header = null)
+    private IEnumerator SetText(Text text, string content, float time, string header = null)
     {
-        if (!text || content == null || rate < 0)
+        if (!text || content == null || time < 0)
         {
             yield break;
         }
@@ -105,13 +106,14 @@ public class DialoguePanel : MonoBehaviour
         var charArray = content.ToCharArray();
         var stringBuilder = new StringBuilder();
         stringBuilder = stringBuilder.Append(header);
+        var waitForSeconds = new WaitForSeconds(time);
         foreach (var c in charArray)
         {
             stringBuilder = stringBuilder.Append(c);
             text.text = stringBuilder.ToString();
-            yield return new WaitForSecondsRealtime(rate);
+            yield return waitForSeconds;
         }
-        
+
         textCoroutine = null;
     }
 }
