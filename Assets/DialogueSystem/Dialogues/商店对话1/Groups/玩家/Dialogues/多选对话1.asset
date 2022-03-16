@@ -19,7 +19,7 @@ MonoBehaviour:
   <Choices>k__BackingField:
   - <Text>k__BackingField: "\u73A9\u5BB6\u9009\u62E91"
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: 4e6a99fb0b4d6c74d8fc93b9b83c7a2c, type: 2}
-  - <Text>k__BackingField: "\u9009\u62E92"
+  - <Text>k__BackingField: "\u73A9\u5BB6\u9009\u62E92"
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: 44e32b630f48e1f4f89b1c98f084ee84, type: 2}
-  - <Text>k__BackingField: "\u9009\u62E93"
+  - <Text>k__BackingField: "\u73A9\u5BB6\u9009\u62E93"
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: 33e9b74799569c2489f918eec54d0319, type: 2}

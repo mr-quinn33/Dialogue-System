@@ -16,7 +16,7 @@ MonoBehaviour:
   <Groups>k__BackingField:
   - <ID>k__BackingField: ceb61286-c999-4827-a897-4a04966a6346
     <Name>k__BackingField: "\u5546\u4EBA"
-    <Position>k__BackingField: {x: -64.00001, y: 83.50002}
+    <Position>k__BackingField: {x: -64.000015, y: 83.50004}
   - <ID>k__BackingField: 944ffee9-4052-4a6b-9110-dba9c2b5f622
     <Name>k__BackingField: "\u73A9\u5BB6"
     <Position>k__BackingField: {x: 415.00003, y: 949.0001}
@@ -108,9 +108,9 @@ MonoBehaviour:
     <Choices>k__BackingField:
     - <Text>k__BackingField: "\u73A9\u5BB6\u9009\u62E91"
       <NodeID>k__BackingField: c28e5451-381f-448c-92f0-a646c9e10c76
-    - <Text>k__BackingField: "\u9009\u62E92"
+    - <Text>k__BackingField: "\u73A9\u5BB6\u9009\u62E92"
       <NodeID>k__BackingField: 968af131-1eea-41b8-8f73-78fe056080ea
-    - <Text>k__BackingField: "\u9009\u62E93"
+    - <Text>k__BackingField: "\u73A9\u5BB6\u9009\u62E93"
       <NodeID>k__BackingField: 76ca0446-16d3-42dd-b80f-a9704b60b39c
     <GroupID>k__BackingField: 944ffee9-4052-4a6b-9110-dba9c2b5f622
     <Type>k__BackingField: 1
