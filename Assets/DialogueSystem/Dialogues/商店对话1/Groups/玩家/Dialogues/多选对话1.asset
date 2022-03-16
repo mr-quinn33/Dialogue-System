@@ -15,9 +15,9 @@ MonoBehaviour:
   <IsStartingDialogue>k__BackingField: 0
   <Type>k__BackingField: 1
   <Name>k__BackingField: "\u591A\u9009\u5BF9\u8BDD1"
-  <Text>k__BackingField: "\u591A\u9009\u5BF9\u8BDD\u6587\u672C1"
+  <Text>k__BackingField: "\u73A9\u5BB6\u5BF9\u8BDD\u6587\u672C1"
   <Choices>k__BackingField:
-  - <Text>k__BackingField: "\u9009\u62E91"
+  - <Text>k__BackingField: "\u73A9\u5BB6\u9009\u62E91"
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: 4e6a99fb0b4d6c74d8fc93b9b83c7a2c, type: 2}
   - <Text>k__BackingField: "\u9009\u62E92"
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: 44e32b630f48e1f4f89b1c98f084ee84, type: 2}

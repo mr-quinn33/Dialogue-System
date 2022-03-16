@@ -15,7 +15,7 @@ MonoBehaviour:
   <IsStartingDialogue>k__BackingField: 0
   <Type>k__BackingField: 0
   <Name>k__BackingField: "\u5355\u9009\u5BF9\u8BDD6"
-  <Text>k__BackingField: "\u5355\u9009\u5BF9\u8BDD\u6587\u672C6"
+  <Text>k__BackingField: "\u5546\u4EBA\u5BF9\u8BDD\u6587\u672C3.2"
   <Choices>k__BackingField:
   - <Text>k__BackingField: Next Dialogue
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: ef2a331dbf8dcd6429fa9ac62485bf03, type: 2}
