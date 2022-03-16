@@ -4,6 +4,7 @@ using DialogueSystem.Editor.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DialogueSystem.Runtime;
 using DialogueSystem.Runtime.Enumerations;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -35,7 +36,8 @@ namespace DialogueSystem.Editor.Elements
             base.BuildContextualMenu(evt);
         }
 
-        public virtual void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView, Vector2 position)
+        public virtual void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView,
+            Vector2 position)
         {
             ID = Guid.NewGuid().ToString();
             Name = nodeName;
@@ -52,7 +54,7 @@ namespace DialogueSystem.Editor.Elements
         {
             var dialogueNameTextField = DialogueSystemElementUtility.CreateTextField(Name, null, callback =>
             {
-                var target = (TextField)callback.target;
+                var target = (TextField) callback.target;
                 target.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters();
                 if (string.IsNullOrEmpty(target.value))
                 {
@@ -90,12 +92,14 @@ namespace DialogueSystem.Editor.Elements
             };
             dialogueNameTextField = dialogueNameTextField.AddClasses(classNames) as TextField;
             titleContainer.Insert(0, dialogueNameTextField);
-            var inputPort = this.CreatePort("Dialogue Connection", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
+            var inputPort = this.CreatePort("Dialogue Connection", Orientation.Horizontal, Direction.Input,
+                Port.Capacity.Multi);
             inputContainer.Add(inputPort);
             var customDataContainer = new VisualElement();
             customDataContainer.AddToClassList("ds-node__custom-data-container");
             var textFoldout = DialogueSystemElementUtility.CreateFoldout("Dialogue Text");
-            var textTextField = DialogueSystemElementUtility.CreateTextArea(Text, null, callback => Text = callback.newValue);
+            var textTextField =
+                DialogueSystemElementUtility.CreateTextArea(Text, null, callback => Text = callback.newValue);
             classNames = new[]
             {
                 "ds-node__text-field",
@@ -129,7 +133,7 @@ namespace DialogueSystem.Editor.Elements
 
         public bool IsStartingNode()
         {
-            var inputPort = (Port)inputContainer.Children().First();
+            var inputPort = (Port) inputContainer.Children().First();
             return !inputPort.connected;
         }
 

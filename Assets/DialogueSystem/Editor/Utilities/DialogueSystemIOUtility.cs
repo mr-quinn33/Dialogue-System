@@ -3,6 +3,7 @@ using DialogueSystem.Editor.Elements;
 using DialogueSystem.Editor.Windows;
 using System.Collections.Generic;
 using System.Linq;
+using DialogueSystem.Runtime;
 using DialogueSystem.Runtime.Data;
 using DialogueSystem.Runtime.ScriptableObjects;
 using DialogueSystem.Runtime.Utilities;
@@ -40,7 +41,8 @@ namespace DialogueSystem.Editor.Utilities
         {
             CreateDefaultFolders();
             GetElementsFromGraphView();
-            var graphData = CreateAsset<DialogueSystemGraphSaveData>("Assets/DialogueSystem/Editor/Graphs", $"{graphFileName}");
+            var graphData =
+                CreateAsset<DialogueSystemGraphSaveData>("Assets/DialogueSystem/Editor/Graphs", $"{graphFileName}");
             graphData.Initialize(graphFileName);
             var dialogueContainer = CreateAsset<DialogueSystemDialogueContainer>(containerFolderPath, graphFileName);
             dialogueContainer.Initialize(graphFileName);
@@ -50,7 +52,8 @@ namespace DialogueSystem.Editor.Utilities
             SaveAsset(dialogueContainer);
         }
 
-        private static void SaveGroups(DialogueSystemGraphSaveData graphData, DialogueSystemDialogueContainer dialogueContainer)
+        private static void SaveGroups(DialogueSystemGraphSaveData graphData,
+            DialogueSystemDialogueContainer dialogueContainer)
         {
             var groupNames = new List<string>();
             foreach (var group in groups)
@@ -74,19 +77,22 @@ namespace DialogueSystem.Editor.Utilities
             graphData.Groups.Add(groupData);
         }
 
-        private static void SaveGroupToScriptableObject(DialogueSystemGroup group, DialogueSystemDialogueContainer dialogueContainer)
+        private static void SaveGroupToScriptableObject(DialogueSystemGroup group,
+            DialogueSystemDialogueContainer dialogueContainer)
         {
             var groupName = group.title;
             CreateFolder($"{containerFolderPath}/Groups", groupName);
             CreateFolder($"{containerFolderPath}/Groups/{groupName}", "Dialogues");
-            var dialogueGroup = CreateAsset<DialogueSystemDialogueGroup>($"{containerFolderPath}/Groups/{groupName}", groupName);
+            var dialogueGroup =
+                CreateAsset<DialogueSystemDialogueGroup>($"{containerFolderPath}/Groups/{groupName}", groupName);
             dialogueGroup.Initialize(groupName);
             createdDialogueGroups.Add(group.ID, dialogueGroup);
             dialogueContainer.Groups.Add(dialogueGroup, new List<DialogueSystemDialogue>());
             SaveAsset(dialogueGroup);
         }
 
-        private static void UpdateOldGroups(IReadOnlyCollection<string> currentGroupNames, DialogueSystemGraphSaveData graphData)
+        private static void UpdateOldGroups(IReadOnlyCollection<string> currentGroupNames,
+            DialogueSystemGraphSaveData graphData)
         {
             if (graphData.OldGroupNames != null && graphData.OldGroupNames.Count != 0)
             {
@@ -100,7 +106,8 @@ namespace DialogueSystem.Editor.Utilities
             graphData.OldGroupNames = new List<string>(currentGroupNames);
         }
 
-        private static void SaveNodes(DialogueSystemGraphSaveData graphData, DialogueSystemDialogueContainer dialogueContainer)
+        private static void SaveNodes(DialogueSystemGraphSaveData graphData,
+            DialogueSystemDialogueContainer dialogueContainer)
         {
             var groupedNodeNames = new SerializableDictionary<string, List<string>>();
             var ungroupedNodeNames = new List<string>();
@@ -138,12 +145,14 @@ namespace DialogueSystem.Editor.Utilities
             graphData.Nodes.Add(nodeData);
         }
 
-        private static void SaveNodeToScriptableObject(DialogueSystemNode node, DialogueSystemDialogueContainer dialogueContainer)
+        private static void SaveNodeToScriptableObject(DialogueSystemNode node,
+            DialogueSystemDialogueContainer dialogueContainer)
         {
             DialogueSystemDialogue dialogue;
             if (node.Group != null)
             {
-                dialogue = CreateAsset<DialogueSystemDialogue>($"{containerFolderPath}/Groups/{node.Group.title}/Dialogues", node.Name);
+                dialogue = CreateAsset<DialogueSystemDialogue>(
+                    $"{containerFolderPath}/Groups/{node.Group.title}/Dialogues", node.Name);
                 dialogueContainer.Groups.AddItem(createdDialogueGroups[node.Group.ID], dialogue);
             }
             else
@@ -152,14 +161,17 @@ namespace DialogueSystem.Editor.Utilities
                 dialogueContainer.UngroupedDialogues.Add(dialogue);
             }
 
-            dialogue.Initialize(node.IsStartingNode(), node.Type, node.Name, node.Text, ConvertNodeChoicesToDialogueChoices(node.Choices));
+            dialogue.Initialize(node.IsStartingNode(), node.Type, node.Name, node.Text,
+                ConvertNodeChoicesToDialogueChoices(node.Choices));
             createdDialogues.Add(node.ID, dialogue);
             SaveAsset(dialogue);
         }
 
-        private static List<DialogueSystemDialogueChoiceData> ConvertNodeChoicesToDialogueChoices(IEnumerable<DialogueSystemChoiceSaveData> nodeChoices)
+        private static List<DialogueSystemDialogueChoiceData> ConvertNodeChoicesToDialogueChoices(
+            IEnumerable<DialogueSystemChoiceSaveData> nodeChoices)
         {
-            return nodeChoices.Select(nodeChoice => new DialogueSystemDialogueChoiceData {Text = nodeChoice.Text}).ToList();
+            return nodeChoices.Select(nodeChoice => new DialogueSystemDialogueChoiceData {Text = nodeChoice.Text})
+                .ToList();
         }
 
         private static void UpdateDialoguesChoicesConnections()
@@ -181,7 +193,8 @@ namespace DialogueSystem.Editor.Utilities
             }
         }
 
-        private static void UpdateOldGroupedNodes(IDictionary<string, List<string>> currentGroupedNodeNames, DialogueSystemGraphSaveData graphData)
+        private static void UpdateOldGroupedNodes(IDictionary<string, List<string>> currentGroupedNodeNames,
+            DialogueSystemGraphSaveData graphData)
         {
             if (graphData.OldGroupedNodeNames != null && graphData.OldGroupedNodeNames.Count != 0)
             {
@@ -190,7 +203,8 @@ namespace DialogueSystem.Editor.Utilities
                     var nodesToRemove = new List<string>();
                     if (currentGroupedNodeNames.ContainsKey(oldGroupedNode.Key))
                     {
-                        nodesToRemove = oldGroupedNode.Value.Except(currentGroupedNodeNames[oldGroupedNode.Key]).ToList();
+                        nodesToRemove = oldGroupedNode.Value.Except(currentGroupedNodeNames[oldGroupedNode.Key])
+                            .ToList();
                     }
 
                     foreach (var nodeToRemove in nodesToRemove)
@@ -203,7 +217,8 @@ namespace DialogueSystem.Editor.Utilities
             graphData.OldGroupedNodeNames = new SerializableDictionary<string, List<string>>(currentGroupedNodeNames);
         }
 
-        private static void UpdateOldUngroupedNodes(IReadOnlyCollection<string> currentUngroupedNodeNames, DialogueSystemGraphSaveData graphData)
+        private static void UpdateOldUngroupedNodes(IReadOnlyCollection<string> currentUngroupedNodeNames,
+            DialogueSystemGraphSaveData graphData)
         {
             if (graphData.OldUngroupedNodeNames != null && graphData.OldUngroupedNodeNames.Count != 0)
             {
@@ -219,7 +234,8 @@ namespace DialogueSystem.Editor.Utilities
 
         public static void Load()
         {
-            var graphData = LoadAsset<DialogueSystemGraphSaveData>("Assets/DialogueSystem/Editor/Graphs", graphFileName);
+            var graphData =
+                LoadAsset<DialogueSystemGraphSaveData>("Assets/DialogueSystem/Editor/Graphs", graphFileName);
             if (graphData == null)
             {
                 _ = EditorUtility.DisplayDialog(
@@ -278,14 +294,14 @@ namespace DialogueSystem.Editor.Utilities
                 foreach (var visualElement in loadedNode.Value.outputContainer.Children())
                 {
                     var choicePort = (Port) visualElement;
-                    var choiceData = (DialogueSystemChoiceSaveData)choicePort.userData;
+                    var choiceData = (DialogueSystemChoiceSaveData) choicePort.userData;
                     if (string.IsNullOrEmpty(choiceData.NodeID))
                     {
                         continue;
                     }
 
                     var nextNode = loadedNodes[choiceData.NodeID];
-                    var nextNodeInputPort = (Port)nextNode.inputContainer.Children().First();
+                    var nextNodeInputPort = (Port) nextNode.inputContainer.Children().First();
                     var edge = choicePort.ConnectTo(nextNodeInputPort);
                     graphView.AddElement(edge);
                     _ = loadedNode.Value.RefreshPorts();
@@ -320,8 +336,8 @@ namespace DialogueSystem.Editor.Utilities
                 {
                     return;
                 }
-                
-                var group = (DialogueSystemGroup)graphElement;
+
+                var group = (DialogueSystemGroup) graphElement;
                 groups.Add(group);
             });
         }
@@ -350,7 +366,7 @@ namespace DialogueSystem.Editor.Utilities
             {
                 return asset;
             }
-            
+
             asset = UnityEngine.ScriptableObject.CreateInstance<T>();
             AssetDatabase.CreateAsset(asset, fullPath);
 
@@ -375,9 +391,11 @@ namespace DialogueSystem.Editor.Utilities
             _ = AssetDatabase.DeleteAsset($"{path}/{assetName}.asset");
         }
 
-        private static List<DialogueSystemChoiceSaveData> CloneNodeChoices(IEnumerable<DialogueSystemChoiceSaveData> nodeChoices)
+        private static List<DialogueSystemChoiceSaveData> CloneNodeChoices(
+            IEnumerable<DialogueSystemChoiceSaveData> nodeChoices)
         {
-            return nodeChoices.Select(choice => new DialogueSystemChoiceSaveData {Text = choice.Text, NodeID = choice.NodeID}).ToList();
+            return nodeChoices.Select(choice => new DialogueSystemChoiceSaveData
+                {Text = choice.Text, NodeID = choice.NodeID}).ToList();
         }
     }
 }

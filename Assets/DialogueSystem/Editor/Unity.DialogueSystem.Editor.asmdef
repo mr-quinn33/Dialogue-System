@@ -1,16 +1,16 @@
 {
-    "name": "Unity.DialogueSystem.Editor",
-    "rootNamespace": "",
-    "references": [
-        "GUID:2a44f8e086b259948a86b73d0283b6a4"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "Unity.DialogueSystem.Editor",
+  "rootNamespace": "",
+  "references": [
+    "GUID:2a44f8e086b259948a86b73d0283b6a4"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

@@ -1,4 +1,6 @@
-public static class TextUtility
+namespace DialogueSystem.Runtime
+{
+    public static class TextUtility
     {
         public static bool IsWhitespace(this char character)
         {
@@ -29,14 +31,14 @@ public static class TextUtility
                 case '\u000C':
                 case '\u000D':
                 case '\u0085':
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
 
                 default:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
             }
         }
 
@@ -81,3 +83,4 @@ public static class TextUtility
             return new string(textCharacters, 0, currentWhitespacesTextLength);
         }
     }
+}

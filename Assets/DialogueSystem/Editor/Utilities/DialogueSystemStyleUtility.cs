@@ -19,7 +19,7 @@ namespace DialogueSystem.Editor.Utilities
         {
             foreach (var styleSheetName in styleSheetNames)
             {
-                var styleSheet = (StyleSheet)EditorGUIUtility.Load(styleSheetName);
+                var styleSheet = (StyleSheet) EditorGUIUtility.Load(styleSheetName);
                 element.styleSheets.Add(styleSheet);
             }
 

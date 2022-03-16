@@ -16,7 +16,7 @@ namespace DialogueSystem.Runtime.Scripts
         [SerializeField] private bool isStartingDialogues;
         [SerializeField] private int selectedDialogueGroupIndex;
         [SerializeField] private int selectedDialogueIndex;
-        
+
         private DialogueSystemDialogue StartingDialogue
         {
             get
@@ -25,9 +25,10 @@ namespace DialogueSystem.Runtime.Scripts
                 {
                     return null;
                 }
-                
+
                 var ungroupedDialogues = dialogueContainer.UngroupedDialogues;
-                foreach (var ungroupedDialogue in ungroupedDialogues.Where(ungroupedDialogue => ungroupedDialogue.IsStartingDialogue))
+                foreach (var ungroupedDialogue in ungroupedDialogues.Where(ungroupedDialogue =>
+                             ungroupedDialogue.IsStartingDialogue))
                 {
                     return ungroupedDialogue;
                 }
@@ -36,7 +37,7 @@ namespace DialogueSystem.Runtime.Scripts
                 return groups.SelectMany(pair => pair.Value.Where(dial => dial.IsStartingDialogue)).FirstOrDefault();
             }
         }
-        
+
         public string Text => dialogue ? dialogue.Text : null;
 
         public string GroupName
@@ -47,7 +48,7 @@ namespace DialogueSystem.Runtime.Scripts
                 return group ? group.GroupName : null;
             }
         }
-        
+
         public int ChoiceCount
         {
             get
@@ -68,13 +69,13 @@ namespace DialogueSystem.Runtime.Scripts
                 };
             }
         }
-        
+
         public string ChoiceText(int index = 0)
         {
             var choice = Choice(index);
             return choice?.Text;
         }
-        
+
         public void Choose(int index = 0)
         {
             var nextDialogue = ChoiceDialogue(index);
@@ -85,7 +86,7 @@ namespace DialogueSystem.Runtime.Scripts
         {
             dialogue = StartingDialogue;
         }
-        
+
         private DialogueSystemDialogue ChoiceDialogue(int index)
         {
             var choice = Choice(index);
@@ -98,13 +99,13 @@ namespace DialogueSystem.Runtime.Scripts
             {
                 return null;
             }
-            
+
             var choices = dialogue.Choices;
             if (choices == null)
             {
                 return null;
             }
-            
+
             var count = choices.Count;
             if (count == 0)
             {
@@ -120,7 +121,7 @@ namespace DialogueSystem.Runtime.Scripts
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
             index = index < 0 ? 0 : index;
             index = index > count - 1 ? count - 1 : index;
             return choices[index];
@@ -137,7 +138,7 @@ namespace DialogueSystem.Runtime.Scripts
             {
                 return null;
             }
-            
+
             var groups = dialogueContainer.Groups;
             if (groups == null || groups.Count == 0)
             {

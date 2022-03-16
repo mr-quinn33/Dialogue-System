@@ -8,7 +8,12 @@ namespace DialogueSystem.Runtime.ScriptableObjects
     {
         [field: SerializeField, ReadOnly] public string FileName { get; private set; }
 
-        [field: SerializeField, ReadOnly] public SerializableDictionary<DialogueSystemDialogueGroup, List<DialogueSystemDialogue>> Groups { get; private set; }
+        [field: SerializeField, ReadOnly]
+        public SerializableDictionary<DialogueSystemDialogueGroup, List<DialogueSystemDialogue>> Groups
+        {
+            get;
+            private set;
+        }
 
         [field: SerializeField, ReadOnly] public List<DialogueSystemDialogue> UngroupedDialogues { get; private set; }
 
@@ -24,15 +29,20 @@ namespace DialogueSystem.Runtime.ScriptableObjects
             return Groups.Keys.Select(dialogueGroup => dialogueGroup.GroupName).ToList();
         }
 
-        public List<string> GetGroupedDialogueNames(DialogueSystemDialogueGroup dialogueGroup, bool startingDialoguesOnly)
+        public List<string> GetGroupedDialogueNames(DialogueSystemDialogueGroup dialogueGroup,
+            bool startingDialoguesOnly)
         {
             var groupedDialogues = Groups[dialogueGroup];
-            return (from groupedDialogue in groupedDialogues where !startingDialoguesOnly || groupedDialogue.IsStartingDialogue select groupedDialogue.Name).ToList();
+            return (from groupedDialogue in groupedDialogues
+                where !startingDialoguesOnly || groupedDialogue.IsStartingDialogue
+                select groupedDialogue.Name).ToList();
         }
 
         public List<string> GetUngroupedDialogueNames(bool startingDialoguesOnly)
         {
-            return (from ungroupedDialogue in UngroupedDialogues where !startingDialoguesOnly || ungroupedDialogue.IsStartingDialogue select ungroupedDialogue.Name).ToList();
+            return (from ungroupedDialogue in UngroupedDialogues
+                where !startingDialoguesOnly || ungroupedDialogue.IsStartingDialogue
+                select ungroupedDialogue.Name).ToList();
         }
     }
 }

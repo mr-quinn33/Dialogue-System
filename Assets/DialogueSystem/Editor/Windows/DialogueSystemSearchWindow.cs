@@ -53,13 +53,15 @@ namespace DialogueSystem.Editor.Windows
             {
                 DialogueType.SingleChoice => Invoke(() =>
                 {
-                    var singleChoiceNode = (DialogueSystemSingleChoiceNode)graphView.CreateNode("DialogueName", DialogueType.SingleChoice, localMousePosition);
+                    var singleChoiceNode = (DialogueSystemSingleChoiceNode) graphView.CreateNode("DialogueName",
+                        DialogueType.SingleChoice, localMousePosition);
                     graphView.AddElement(singleChoiceNode);
                     return true;
                 }),
                 DialogueType.MultipleChoice => Invoke(() =>
                 {
-                    var multipleChoiceNode = (DialogueSystemMultipleChoiceNode)graphView.CreateNode("DialogueName", DialogueType.MultipleChoice, localMousePosition);
+                    var multipleChoiceNode = (DialogueSystemMultipleChoiceNode) graphView.CreateNode("DialogueName",
+                        DialogueType.MultipleChoice, localMousePosition);
                     graphView.AddElement(multipleChoiceNode);
                     return true;
                 }),

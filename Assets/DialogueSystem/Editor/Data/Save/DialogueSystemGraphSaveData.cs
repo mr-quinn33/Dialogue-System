@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DialogueSystem.Runtime;
 using UnityEngine;
 
 namespace DialogueSystem.Editor.Data.Save
@@ -15,7 +16,8 @@ namespace DialogueSystem.Editor.Data.Save
 
         [field: SerializeField, ReadOnly] public List<string> OldUngroupedNodeNames { get; set; }
 
-        [field: SerializeField, ReadOnly] public SerializableDictionary<string, List<string>> OldGroupedNodeNames { get; set; }
+        [field: SerializeField, ReadOnly]
+        public SerializableDictionary<string, List<string>> OldGroupedNodeNames { get; set; }
 
         public void Initialize(string fileName)
         {

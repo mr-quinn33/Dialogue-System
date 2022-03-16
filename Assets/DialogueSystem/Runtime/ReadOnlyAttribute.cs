@@ -1,3 +1,8 @@
 using UnityEngine;
 
-public class ReadOnlyAttribute : PropertyAttribute { }
+namespace DialogueSystem.Runtime
+{
+    public class ReadOnlyAttribute : PropertyAttribute
+    {
+    }
+}

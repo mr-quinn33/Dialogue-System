@@ -5,6 +5,7 @@ using DialogueSystem.Editor.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DialogueSystem.Runtime;
 using DialogueSystem.Runtime.Enumerations;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -19,7 +20,9 @@ namespace DialogueSystem.Editor.Windows
         private readonly DialogueSystemEditorWindow editorWindow;
         private readonly SerializableDictionary<string, DialogueSystemNodeErrorData> ungroupedNodes;
         private readonly SerializableDictionary<string, DialogueSystemGroupErrorData> groups;
-        private readonly SerializableDictionary<Group, SerializableDictionary<string, DialogueSystemNodeErrorData>> groupedNodes;
+
+        private readonly SerializableDictionary<Group, SerializableDictionary<string, DialogueSystemNodeErrorData>>
+            groupedNodes;
 
         public int ErrorsCount
         {
@@ -43,7 +46,8 @@ namespace DialogueSystem.Editor.Windows
             editorWindow = dialogueSystemEditorWindow;
             ungroupedNodes = new SerializableDictionary<string, DialogueSystemNodeErrorData>();
             groups = new SerializableDictionary<string, DialogueSystemGroupErrorData>();
-            groupedNodes = new SerializableDictionary<Group, SerializableDictionary<string, DialogueSystemNodeErrorData>>();
+            groupedNodes =
+                new SerializableDictionary<Group, SerializableDictionary<string, DialogueSystemNodeErrorData>>();
             AddManipulators();
             AddGridBackground();
             AddSearchWindow();
@@ -93,13 +97,19 @@ namespace DialogueSystem.Editor.Windows
 
         private IManipulator CreateNodeContextualMenu(string actionTitle, DialogueType dialogueType)
         {
-            var contextualMenuManipulator = new ContextualMenuManipulator(menuEvent => menuEvent.menu.AppendAction(actionTitle, actionEvent => AddElement(CreateNode("DialogueName", dialogueType, GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)))));
+            var contextualMenuManipulator = new ContextualMenuManipulator(menuEvent =>
+                menuEvent.menu.AppendAction(actionTitle,
+                    actionEvent => AddElement(CreateNode("DialogueName", dialogueType,
+                        GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)))));
             return contextualMenuManipulator;
         }
 
         private IManipulator CreateGroupContextualMenu()
         {
-            var contextualMenuManipulator = new ContextualMenuManipulator(menuEvent => menuEvent.menu.AppendAction("Add Group", actionEvent => CreateGroup("DialogueGroup", GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))));
+            var contextualMenuManipulator = new ContextualMenuManipulator(menuEvent =>
+                menuEvent.menu.AppendAction("Add Group",
+                    actionEvent => CreateGroup("DialogueGroup",
+                        GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))));
             return contextualMenuManipulator;
         }
 
@@ -121,10 +131,11 @@ namespace DialogueSystem.Editor.Windows
             return group;
         }
 
-        public DialogueSystemNode CreateNode(string nodeName, DialogueType dialogueType, Vector2 position, bool shouldDraw = true)
+        public DialogueSystemNode CreateNode(string nodeName, DialogueType dialogueType, Vector2 position,
+            bool shouldDraw = true)
         {
             var nodeType = Type.GetType($"DialogueSystem.Editor.Elements.DialogueSystem{dialogueType}Node");
-            var node = (DialogueSystemNode)Activator.CreateInstance(nodeType ?? throw new InvalidOperationException());
+            var node = (DialogueSystemNode) Activator.CreateInstance(nodeType ?? throw new InvalidOperationException());
             node.Initialize(nodeName, this, position);
             if (shouldDraw)
             {
@@ -154,7 +165,7 @@ namespace DialogueSystem.Editor.Windows
 
                     if (selectedElement.GetType() == edgeType)
                     {
-                        var edge = (Edge)selectedElement;
+                        var edge = (Edge) selectedElement;
                         edgesToDelete.Add(edge);
                         continue;
                     }
@@ -164,7 +175,7 @@ namespace DialogueSystem.Editor.Windows
                         continue;
                     }
 
-                    var group = (DialogueSystemGroup)selectedElement;
+                    var group = (DialogueSystemGroup) selectedElement;
                     groupsToDelete.Add(@group);
                 }
 
@@ -198,7 +209,7 @@ namespace DialogueSystem.Editor.Windows
                         continue;
                     }
 
-                    var dialogueSystemGroup = (DialogueSystemGroup)group;
+                    var dialogueSystemGroup = (DialogueSystemGroup) group;
                     RemoveUngroupedNode(node);
                     AddGroupedNode(node, dialogueSystemGroup);
                 }
@@ -216,7 +227,7 @@ namespace DialogueSystem.Editor.Windows
                         continue;
                     }
 
-                    var dialogueSystemGroup = (DialogueSystemGroup)group;
+                    var dialogueSystemGroup = (DialogueSystemGroup) group;
                     RemoveGroupedNode(node, dialogueSystemGroup);
                     AddUngroupedNode(node);
                 }
@@ -227,7 +238,7 @@ namespace DialogueSystem.Editor.Windows
         {
             groupTitleChanged = (group, newTitle) =>
             {
-                var dialogueSystemGroup = (DialogueSystemGroup)group;
+                var dialogueSystemGroup = (DialogueSystemGroup) group;
                 dialogueSystemGroup.title = newTitle.RemoveWhitespaces().RemoveSpecialCharacters();
                 if (string.IsNullOrEmpty(dialogueSystemGroup.title))
                 {
@@ -258,23 +269,27 @@ namespace DialogueSystem.Editor.Windows
                 {
                     foreach (var edge in changes.edgesToCreate)
                     {
-                        var nextNode = (DialogueSystemNode)edge.input.node;
-                        var choiceData = (DialogueSystemChoiceSaveData)edge.output.userData;
+                        var nextNode = (DialogueSystemNode) edge.input.node;
+                        var choiceData = (DialogueSystemChoiceSaveData) edge.output.userData;
                         choiceData.NodeID = nextNode.ID;
                     }
                 }
-                
+
                 if (changes.elementsToRemove == null)
                 {
                     return changes;
                 }
-                
+
                 var edgeType = typeof(Edge);
-                foreach (var choiceData in from element in changes.elementsToRemove where element.GetType() == edgeType select (Edge)element into edge select (DialogueSystemChoiceSaveData)edge.output.userData)
+                foreach (var choiceData in from element in changes.elementsToRemove
+                         where element.GetType() == edgeType
+                         select (Edge) element
+                         into edge
+                         select (DialogueSystemChoiceSaveData) edge.output.userData)
                 {
                     choiceData.NodeID = string.Empty;
                 }
-                
+
                 return changes;
             };
         }
@@ -298,7 +313,7 @@ namespace DialogueSystem.Editor.Windows
             {
                 return;
             }
-            
+
             ++ErrorsCount;
             ungroupedNodesList[0].SetErrorStyle(errorColor);
         }
@@ -340,7 +355,7 @@ namespace DialogueSystem.Editor.Windows
             {
                 return;
             }
-            
+
             ++ErrorsCount;
             groupsList[0].SetErrorStyle(errorColor);
         }
@@ -388,7 +403,7 @@ namespace DialogueSystem.Editor.Windows
             {
                 return;
             }
-            
+
             ++ErrorsCount;
             groupedNodesList[0].SetErrorStyle(errorColor);
         }
@@ -413,7 +428,7 @@ namespace DialogueSystem.Editor.Windows
                     {
                         _ = groupedNodes.Remove(@group);
                     }
-                    
+
                     break;
                 }
             }
@@ -434,7 +449,8 @@ namespace DialogueSystem.Editor.Windows
             }
 
             searchWindow.Initialize(this);
-            nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindow);
+            nodeCreationRequest = context =>
+                SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindow);
         }
 
         private void AddStyles()
@@ -452,7 +468,8 @@ namespace DialogueSystem.Editor.Windows
             var worldMousePosition = mousePosition;
             if (isSearchWindow)
             {
-                worldMousePosition = editorWindow.rootVisualElement.ChangeCoordinatesTo(editorWindow.rootVisualElement.parent, mousePosition - editorWindow.position.position);
+                worldMousePosition = editorWindow.rootVisualElement.ChangeCoordinatesTo(
+                    editorWindow.rootVisualElement.parent, mousePosition - editorWindow.position.position);
             }
 
             var localMousePosition = contentViewContainer.WorldToLocal(worldMousePosition);

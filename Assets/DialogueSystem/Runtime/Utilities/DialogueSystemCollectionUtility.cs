@@ -12,7 +12,7 @@ namespace DialogueSystem.Runtime.Utilities
                 return;
             }
 
-            serializableDictionary.Add(key, new List<V> { value });
+            serializableDictionary.Add(key, new List<V> {value});
         }
     }
 }

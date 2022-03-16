@@ -12,7 +12,8 @@ namespace DialogueSystem.Editor.Elements
     // ReSharper disable once ClassNeverInstantiated.Global
     public class DialogueSystemMultipleChoiceNode : DialogueSystemNode
     {
-        public override void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView, Vector2 position)
+        public override void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView,
+            Vector2 position)
         {
             base.Initialize(nodeName, dialogueSystemGraphView, position);
             Type = DialogueType.MultipleChoice;
@@ -50,7 +51,7 @@ namespace DialogueSystem.Editor.Elements
         {
             var choicePort = this.CreatePort();
             choicePort.userData = data;
-            var choiceData = (DialogueSystemChoiceSaveData)data;
+            var choiceData = (DialogueSystemChoiceSaveData) data;
             var deleteChoiceButton = DialogueSystemElementUtility.CreateButton("Delete", () =>
             {
                 if (Choices.Count == 1)
@@ -67,7 +68,8 @@ namespace DialogueSystem.Editor.Elements
                 GraphView.RemoveElement(choicePort);
             });
             deleteChoiceButton.AddToClassList("ds-node__button");
-            var choiceTextField = DialogueSystemElementUtility.CreateTextField(choiceData.Text, null, callback => choiceData.Text = callback.newValue);
+            var choiceTextField = DialogueSystemElementUtility.CreateTextField(choiceData.Text, null,
+                callback => choiceData.Text = callback.newValue);
             var classNames = new[]
             {
                 "ds-node__text-field",
