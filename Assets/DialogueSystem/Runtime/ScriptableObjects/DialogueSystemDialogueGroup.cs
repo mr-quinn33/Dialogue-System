@@ -4,7 +4,9 @@ namespace DialogueSystem.Runtime.ScriptableObjects
 {
     public class DialogueSystemDialogueGroup : ScriptableObject
     {
-        [field: SerializeField, ReadOnly] public string GroupName { get; private set; }
+        [field: SerializeField]
+        [field: ReadOnly]
+        public string GroupName { get; private set; }
 
         public void Initialize(string groupName)
         {

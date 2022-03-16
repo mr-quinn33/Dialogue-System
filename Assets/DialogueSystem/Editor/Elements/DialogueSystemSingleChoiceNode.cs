@@ -9,8 +9,7 @@ namespace DialogueSystem.Editor.Elements
     // ReSharper disable once ClassNeverInstantiated.Global
     public class DialogueSystemSingleChoiceNode : DialogueSystemNode
     {
-        public override void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView,
-            Vector2 position)
+        public override void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView, Vector2 position)
         {
             base.Initialize(nodeName, dialogueSystemGraphView, position);
             Type = DialogueType.SingleChoice;

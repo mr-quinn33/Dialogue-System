@@ -57,8 +57,7 @@ namespace DialogueSystem.Runtime
             var firstChild = transform.GetChild(0);
             if (firstChild && firstChild.TryGetComponent(out Text dialogueText) && gameObject.activeInHierarchy)
             {
-                textCoroutine =
-                    StartCoroutine(SetText(dialogueText, dialogue.Text, timeSpan, dialogue.GroupName + ": "));
+                textCoroutine = StartCoroutine(SetText(dialogueText, dialogue.Text, timeSpan, dialogue.GroupName + ": "));
             }
 
             for (var i = 0; i < dialogue.ChoiceCount; i++)

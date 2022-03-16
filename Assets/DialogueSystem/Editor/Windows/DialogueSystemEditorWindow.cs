@@ -37,8 +37,8 @@ namespace DialogueSystem.Editor.Windows
         private void AddToolbar()
         {
             var toolbar = new Toolbar();
-            fileNameTextField = DialogueSystemElementUtility.CreateTextField(DefaultFileName, "File Name:",
-                callback => fileNameTextField.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters());
+            fileNameTextField = DialogueSystemElementUtility.CreateTextField(DefaultFileName, "File Name:", callback =>
+                fileNameTextField.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters());
             saveButton = DialogueSystemElementUtility.CreateButton("Save", Save);
             var loadButton = DialogueSystemElementUtility.CreateButton("Load", Load);
             var clearButton = DialogueSystemElementUtility.CreateButton("Clear", Clear);
@@ -61,8 +61,7 @@ namespace DialogueSystem.Editor.Windows
         {
             if (string.IsNullOrEmpty(fileNameTextField.value))
             {
-                _ = EditorUtility.DisplayDialog("Invalid file name.",
-                    "Please ensure the file name you've typed in is valid.", "OK");
+                _ = EditorUtility.DisplayDialog("Invalid file name.", "Please ensure the file name you've typed in is valid.", "OK");
                 return;
             }
 
@@ -72,10 +71,8 @@ namespace DialogueSystem.Editor.Windows
 
         private void Load()
         {
-            var filePath =
-                EditorUtility.OpenFilePanel("Dialogue Graphs", "Assets/DialogueSystem/Editor/Graphs", "asset");
+            var filePath = EditorUtility.OpenFilePanel("Dialogue Graphs", "Assets/DialogueSystem/Editor/Graphs", "asset");
             if (string.IsNullOrEmpty(filePath)) return;
-
             Clear();
             DialogueSystemIOUtility.Initialize(graphView, Path.GetFileNameWithoutExtension(filePath));
             DialogueSystemIOUtility.Load();

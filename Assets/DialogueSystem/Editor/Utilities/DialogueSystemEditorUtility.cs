@@ -27,11 +27,6 @@ namespace DialogueSystem.Editor.Utilities
             return EditorGUILayout.Popup(label, selectedIndexProperty.intValue, options);
         }
 
-        public static int DrawPopup(string label, int selectedIndex, string[] options)
-        {
-            return EditorGUILayout.Popup(label, selectedIndex, options);
-        }
-
         public static bool DrawPropertyField(this SerializedProperty serializedProperty)
         {
             return EditorGUILayout.PropertyField(serializedProperty);

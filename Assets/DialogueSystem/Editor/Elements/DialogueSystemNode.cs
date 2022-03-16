@@ -1,9 +1,9 @@
-using DialogueSystem.Editor.Data.Save;
-using DialogueSystem.Editor.Utilities;
-using DialogueSystem.Editor.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DialogueSystem.Editor.Data.Save;
+using DialogueSystem.Editor.Utilities;
+using DialogueSystem.Editor.Windows;
 using DialogueSystem.Runtime;
 using DialogueSystem.Runtime.Enumerations;
 using UnityEditor.Experimental.GraphView;
@@ -14,8 +14,8 @@ namespace DialogueSystem.Editor.Elements
 {
     public abstract class DialogueSystemNode : Node
     {
-        private protected DialogueSystemGraphView GraphView;
         private Color defaultBackgroundColor;
+        private protected DialogueSystemGraphView graphView;
 
         public string ID { get; set; }
 
@@ -36,14 +36,13 @@ namespace DialogueSystem.Editor.Elements
             base.BuildContextualMenu(evt);
         }
 
-        public virtual void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView,
-            Vector2 position)
+        public virtual void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView, Vector2 position)
         {
             ID = Guid.NewGuid().ToString();
             Name = nodeName;
             Choices = new List<DialogueSystemChoiceSaveData>();
             Text = "Dialogue text.";
-            GraphView = dialogueSystemGraphView;
+            graphView = dialogueSystemGraphView;
             defaultBackgroundColor = new Color(29f / 255f, 29f / 255f, 30f / 255f);
             mainContainer.AddToClassList("ds-node__main-container");
             extensionContainer.AddToClassList("ds-node__extension-container");
@@ -58,31 +57,25 @@ namespace DialogueSystem.Editor.Elements
                 target.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters();
                 if (string.IsNullOrEmpty(target.value))
                 {
-                    if (!string.IsNullOrEmpty(Name))
-                    {
-                        ++GraphView.ErrorsCount;
-                    }
+                    if (!string.IsNullOrEmpty(Name)) ++graphView.ErrorsCount;
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(Name))
-                    {
-                        --GraphView.ErrorsCount;
-                    }
+                    if (string.IsNullOrEmpty(Name)) --graphView.ErrorsCount;
                 }
 
                 if (Group == null)
                 {
-                    GraphView.RemoveUngroupedNode(this);
+                    graphView.RemoveUngroupedNode(this);
                     Name = target.value;
-                    GraphView.AddUngroupedNode(this);
+                    graphView.AddUngroupedNode(this);
                     return;
                 }
 
                 var currentGroup = Group;
-                GraphView.RemoveGroupedNode(this, Group);
+                graphView.RemoveGroupedNode(this, Group);
                 Name = target.value;
-                GraphView.AddGroupedNode(this, currentGroup);
+                graphView.AddGroupedNode(this, currentGroup);
             });
             var classNames = new[]
             {
@@ -92,14 +85,12 @@ namespace DialogueSystem.Editor.Elements
             };
             dialogueNameTextField = dialogueNameTextField.AddClasses(classNames) as TextField;
             titleContainer.Insert(0, dialogueNameTextField);
-            var inputPort = this.CreatePort("Dialogue Connection", Orientation.Horizontal, Direction.Input,
-                Port.Capacity.Multi);
+            var inputPort = this.CreatePort("Dialogue Connection", Orientation.Horizontal, Direction.Input, Port.Capacity.Multi);
             inputContainer.Add(inputPort);
             var customDataContainer = new VisualElement();
             customDataContainer.AddToClassList("ds-node__custom-data-container");
             var textFoldout = DialogueSystemElementUtility.CreateFoldout("Dialogue Text");
-            var textTextField =
-                DialogueSystemElementUtility.CreateTextArea(Text, null, callback => Text = callback.newValue);
+            var textTextField = DialogueSystemElementUtility.CreateTextArea(Text, null, callback => Text = callback.newValue);
             classNames = new[]
             {
                 "ds-node__text-field",
@@ -122,12 +113,8 @@ namespace DialogueSystem.Editor.Elements
             foreach (var visualElement in container.Children())
             {
                 var port = (Port) visualElement;
-                if (!port.connected)
-                {
-                    continue;
-                }
-
-                GraphView.DeleteElements(port.connections);
+                if (!port.connected) continue;
+                graphView.DeleteElements(port.connections);
             }
         }
 

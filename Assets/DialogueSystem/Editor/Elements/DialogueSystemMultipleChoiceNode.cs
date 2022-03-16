@@ -12,8 +12,7 @@ namespace DialogueSystem.Editor.Elements
     // ReSharper disable once ClassNeverInstantiated.Global
     public class DialogueSystemMultipleChoiceNode : DialogueSystemNode
     {
-        public override void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView,
-            Vector2 position)
+        public override void Initialize(string nodeName, DialogueSystemGraphView dialogueSystemGraphView, Vector2 position)
         {
             base.Initialize(nodeName, dialogueSystemGraphView, position);
             Type = DialogueType.MultipleChoice;
@@ -39,11 +38,7 @@ namespace DialogueSystem.Editor.Elements
             });
             addChoiceButton.AddToClassList("ds-node__button");
             mainContainer.Insert(1, addChoiceButton);
-            foreach (var choicePort in Choices.Select(CreateChoicePort))
-            {
-                outputContainer.Add(choicePort);
-            }
-
+            foreach (var choicePort in Choices.Select(CreateChoicePort)) outputContainer.Add(choicePort);
             RefreshExpandedState();
         }
 
@@ -54,22 +49,13 @@ namespace DialogueSystem.Editor.Elements
             var choiceData = (DialogueSystemChoiceSaveData) data;
             var deleteChoiceButton = DialogueSystemElementUtility.CreateButton("Delete", () =>
             {
-                if (Choices.Count == 1)
-                {
-                    return;
-                }
-
-                if (choicePort.connected)
-                {
-                    GraphView.DeleteElements(choicePort.connections);
-                }
-
+                if (Choices.Count == 1) return;
+                if (choicePort.connected) graphView.DeleteElements(choicePort.connections);
                 _ = Choices.Remove(choiceData);
-                GraphView.RemoveElement(choicePort);
+                graphView.RemoveElement(choicePort);
             });
             deleteChoiceButton.AddToClassList("ds-node__button");
-            var choiceTextField = DialogueSystemElementUtility.CreateTextField(choiceData.Text, null,
-                callback => choiceData.Text = callback.newValue);
+            var choiceTextField = DialogueSystemElementUtility.CreateTextField(choiceData.Text, null, callback => choiceData.Text = callback.newValue);
             var classNames = new[]
             {
                 "ds-node__text-field",

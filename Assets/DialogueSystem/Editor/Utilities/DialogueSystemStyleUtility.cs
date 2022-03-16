@@ -7,11 +7,7 @@ namespace DialogueSystem.Editor.Utilities
     {
         public static VisualElement AddClasses(this VisualElement element, params string[] classNames)
         {
-            foreach (var className in classNames)
-            {
-                element.AddToClassList(className);
-            }
-
+            foreach (var className in classNames) element.AddToClassList(className);
             return element;
         }
 

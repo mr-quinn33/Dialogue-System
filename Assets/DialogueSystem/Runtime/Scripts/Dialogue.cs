@@ -21,18 +21,9 @@ namespace DialogueSystem.Runtime.Scripts
         {
             get
             {
-                if (!dialogueContainer)
-                {
-                    return null;
-                }
-
+                if (!dialogueContainer) return null;
                 var ungroupedDialogues = dialogueContainer.UngroupedDialogues;
-                foreach (var ungroupedDialogue in ungroupedDialogues.Where(ungroupedDialogue =>
-                             ungroupedDialogue.IsStartingDialogue))
-                {
-                    return ungroupedDialogue;
-                }
-
+                foreach (var ungroupedDialogue in ungroupedDialogues.Where(ungroupedDialogue => ungroupedDialogue.IsStartingDialogue)) return ungroupedDialogue;
                 var groups = dialogueContainer.Groups;
                 return groups.SelectMany(pair => pair.Value.Where(dial => dial.IsStartingDialogue)).FirstOrDefault();
             }
@@ -53,21 +44,20 @@ namespace DialogueSystem.Runtime.Scripts
         {
             get
             {
-                if (!dialogue)
-                {
-                    return 0;
-                }
-
+                if (!dialogue) return 0;
                 var dialogueType = dialogue.Type;
                 return dialogueType switch
                 {
                     DialogueType.SingleChoice => 1,
-                    DialogueType.MultipleChoice => dialogue.Choices == null || dialogue.Choices.Count == 0
-                        ? 0
-                        : dialogue.Choices.Count,
+                    DialogueType.MultipleChoice => dialogue.Choices == null || dialogue.Choices.Count == 0 ? 0 : dialogue.Choices.Count,
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
+        }
+
+        public void Reset()
+        {
+            dialogue = StartingDialogue;
         }
 
         public string ChoiceText(int index = 0)
@@ -82,11 +72,6 @@ namespace DialogueSystem.Runtime.Scripts
             dialogue = nextDialogue;
         }
 
-        public void Reset()
-        {
-            dialogue = StartingDialogue;
-        }
-
         private DialogueSystemDialogue ChoiceDialogue(int index)
         {
             var choice = Choice(index);
@@ -95,31 +80,25 @@ namespace DialogueSystem.Runtime.Scripts
 
         private DialogueSystemDialogueChoiceData Choice(int index)
         {
-            if (!dialogue)
-            {
-                return null;
-            }
-
+            if (!dialogue) return null;
             var choices = dialogue.Choices;
-            if (choices == null)
-            {
-                return null;
-            }
-
+            if (choices == null) return null;
             var count = choices.Count;
-            if (count == 0)
-            {
-                return null;
-            }
-
+            if (count == 0) return null;
             switch (dialogue.Type)
             {
                 case DialogueType.SingleChoice:
+                {
                     return choices[0];
+                }
                 case DialogueType.MultipleChoice:
+                {
                     break;
+                }
                 default:
+                {
                     throw new ArgumentOutOfRangeException();
+                }
             }
 
             index = index < 0 ? 0 : index;
@@ -129,22 +108,10 @@ namespace DialogueSystem.Runtime.Scripts
 
         private DialogueSystemDialogueGroup Group(DialogueSystemDialogue dial)
         {
-            if (!dial)
-            {
-                return null;
-            }
-
-            if (!dialogueContainer)
-            {
-                return null;
-            }
-
+            if (!dial) return null;
+            if (!dialogueContainer) return null;
             var groups = dialogueContainer.Groups;
-            if (groups == null || groups.Count == 0)
-            {
-                return null;
-            }
-
+            if (groups == null || groups.Count == 0) return null;
             return (from pair in groups where pair.Value.Contains(dial) select pair.Key).FirstOrDefault();
         }
     }

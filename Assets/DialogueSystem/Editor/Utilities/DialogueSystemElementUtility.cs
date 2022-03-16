@@ -1,5 +1,5 @@
-using DialogueSystem.Editor.Elements;
 using System;
+using DialogueSystem.Editor.Elements;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
@@ -26,8 +26,7 @@ namespace DialogueSystem.Editor.Utilities
             return foldout;
         }
 
-        public static Port CreatePort(this DialogueSystemNode node, string portName = "",
-            Orientation orientation = Orientation.Horizontal, Direction direction = Direction.Output,
+        public static Port CreatePort(this DialogueSystemNode node, string portName = "", Orientation orientation = Orientation.Horizontal, Direction direction = Direction.Output,
             Port.Capacity capacity = Port.Capacity.Single)
         {
             var port = node.InstantiatePort(orientation, direction, capacity, typeof(bool));
@@ -35,24 +34,18 @@ namespace DialogueSystem.Editor.Utilities
             return port;
         }
 
-        public static TextField CreateTextField(string value = null, string label = null,
-            EventCallback<ChangeEvent<string>> onValueChanged = null)
+        public static TextField CreateTextField(string value = null, string label = null, EventCallback<ChangeEvent<string>> onValueChanged = null)
         {
             var textField = new TextField
             {
                 value = value,
                 label = label
             };
-            if (onValueChanged != null)
-            {
-                _ = textField.RegisterValueChangedCallback(onValueChanged);
-            }
-
+            if (onValueChanged != null) _ = textField.RegisterValueChangedCallback(onValueChanged);
             return textField;
         }
 
-        public static TextField CreateTextArea(string value = null, string label = null,
-            EventCallback<ChangeEvent<string>> onValueChanged = null)
+        public static TextField CreateTextArea(string value = null, string label = null, EventCallback<ChangeEvent<string>> onValueChanged = null)
         {
             var textArea = CreateTextField(value, label, onValueChanged);
             textArea.multiline = true;

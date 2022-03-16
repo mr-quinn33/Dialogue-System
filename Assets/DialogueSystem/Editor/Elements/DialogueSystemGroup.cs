@@ -9,10 +9,6 @@ namespace DialogueSystem.Editor.Elements
         private readonly Color defaultBorderColor;
         private readonly float defaultBorderWidth;
 
-        public string ID { get; set; }
-
-        public string OldTitle { get; set; }
-
         public DialogueSystemGroup(string groupTitle, Vector2 position)
         {
             ID = Guid.NewGuid().ToString();
@@ -22,6 +18,10 @@ namespace DialogueSystem.Editor.Elements
             defaultBorderWidth = contentContainer.style.borderBottomWidth.value;
             SetPosition(new Rect(position, Vector2.zero));
         }
+
+        public string ID { get; set; }
+
+        public string OldTitle { get; set; }
 
         public void SetErrorStyle(Color color)
         {
