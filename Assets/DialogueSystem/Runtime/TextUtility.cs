@@ -2,7 +2,7 @@ namespace DialogueSystem.Runtime
 {
     public static class TextUtility
     {
-        public static bool IsWhitespace(this char character)
+        private static bool IsWhitespace(this char character)
         {
             switch (character)
             {
